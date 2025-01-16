@@ -1,0 +1,128 @@
+<div class="order-header">
+	<div>
+		<input class="cont_{{ order.id }}" type="checkbox" name="" id="checkbox_all" >
+	</div>
+	<p>№</p>
+	<p class="mobile-hide order-header-product-art">Артикул</p>
+	<p>ФИО | Телефон</p>
+	<p>TTN</p>
+	<p>Оплата</p>
+	<p class="mobile-hide order-header-product-price">in</p>
+	<p class="mobile-hide order-header-income-price">out</p>
+	<p>=</p>
+	<p class="mobile-hide">Создано</p>
+	<p></p>
+</div>
+
+
+{% for order in orders %}
+<div class="order-block order-{{ order.id }}" data-id="{{ order.id }}" data-code="{{ order.ttn_data.code }}"> <!-- {{ order.ttn_data.name }} -->
+	<div class="order-top">
+		<div class="order_check">
+			<input class="checkbox" type="checkbox" data-id="{{ order.id }}" name="" id="checkbox_{{ order.id }}" >
+		</div>
+		<p class="order_id">{{ order.id }}</p>
+		<a class="order-product mobile-hide" href="{% url 'products' %}#{{ order.product.id }}">{{ order.product.name }}</a>
+		<p class="order-top-client-info">
+			<span class="order-top-client-name">{{ order.client_name }} {{ order.client_surname }} {% if order.client_patronymic %}{{ order.client_patronymic }}{% endif %}</span>
+			<span class="order-top-client-phone">{{ order.client_phone }}</span>
+		</p>
+		<div class="order-top-ttn-data">
+			<a href="{{ order.ttnLink }}" target="_blank">{{ order.ttn }}</a>
+			<p>{{ order.ttn_data.name }}</p>
+		</div>
+		<p class="payment">{{ order.payment }}</p>
+
+		<p class="mobile-hide">{{ order.product.price }}</p>
+		<p class="mobile-hide">{{ order.price }}</p>
+		<p>{{ order.income }}</p>
+
+		<p class="mobile-hide data created">{{ order.created }}</p>
+
+		<button class="open-bottom-btn">
+			<svg width="434" height="427" viewBox="0 0 434 427" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M409 25L217 233L25 25" stroke="black" stroke-width="50" stroke-linecap="round"/>
+				<path d="M409 182L217 390L25 182" stroke="black" stroke-width="50" stroke-linecap="round"/>
+			</svg>
+		</button>
+	</div>
+
+	<div class="order-bottom">
+		<img class="mobile-hide order-product-img" src="{{ order.product.img }}" alt="">
+		<div class="order-bottom-product">
+			<p>{{ order.product.article }}</p>
+			<p>{{ order.product.gender }}</p>
+			<p>{{ order.product.supplier }}</p>
+		</div>
+		<p class="order-bottom-client-check">
+			{% if order.client_check %}
+			<a href="{{ order.client_check.url }}" target="_blank"><img src="{{ order.client_check.url }}" alt=""></a>
+			{% endif %}
+		</p>
+		<p class="order-bottom-address">{% if order.client_address %}{{ order.client_address }}{% endif %}</p>
+		<p class="mobile-hide"></p>
+		<p class="mobile-hide order-bottom-check">
+			{% if order.bank_check %}
+			<a href="{{ order.bank_check.url }}" target="_blank"><img src="{{ order.bank_check.url }}" alt=""></a>
+			{% endif %}
+		</p>
+		<a href="{% url 'edit_order' order.id %}" class="edit-order-link">
+			<svg width="330" height="331" viewBox="0 0 330 331" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M331 63.5321C330.387 65.2614 329.533 66.4626 329.201 67.794C327.106 76.2012 323.249 83.744 317.229 89.8865C306.987 100.337 296.388 110.437 286.382 120.25C261.656 95.5159 236.672 70.5247 211.187 45.0313C222.17 34.4258 232.974 21.9845 245.737 12.0634C277.606 -12.7093 323.272 5.87389 330.637 45.8611C331 51.688 331 57.3761 331 63.5321Z" fill="#010101"/>
+				<path d="M113.785 142.785C138.514 118.027 162.992 93.5184 187.143 69.337C212.348 94.5432 237.389 119.585 263.063 145.261C262.062 146.037 260.485 147.009 259.21 148.283C206.298 201.148 153.326 253.954 100.644 307.047C94.6778 313.059 88.2683 316.406 80.0888 317.905C58.5082 321.859 37.0228 326.334 15.5047 330.628C5.64904 332.595 -0.658408 326.544 1.27059 316.828C5.89984 293.511 10.651 270.217 15.1784 246.881C16.1413 241.918 18.3727 238.069 21.9549 234.508C52.5563 204.092 83.0261 173.544 113.785 142.785Z" fill="#010101"/>
+			</svg>
+		</a>
+	</div>
+</div>
+{% endfor %}
+
+<script>
+	$(document).ready(function () {
+		const order_block = $('.order-block')
+		var white  = [ 1, 12 ]
+		var yellow = [ 4, 41, 5, 6, 7, 8, 101, 104, 112 ]
+		var green  = [ 9, 10, 11 ]
+		var red    = [ 2, 3, 102, 103, 105, 106, 111 ]
+
+		$.each(order_block, function (i, value) {
+			var ttnDataCode = parseInt($(this).data("code"))
+
+			switch (true) {
+				case white.includes(ttnDataCode):
+					$(this).addClass('order-white');
+					break;
+				case yellow.includes(ttnDataCode):
+					$(this).addClass('order-yellow');
+					break;
+				case red.includes(ttnDataCode):
+					$(this).addClass('order-red');
+					break;
+				case green.includes(ttnDataCode):
+					$(this).addClass('order-green');
+					break;
+				default:
+					$(this).addClass('order-white');
+					break;
+			}
+		});
+
+		const openBottomBtns = $('.open-bottom-btn');
+
+		openBottomBtns.on('click', function (e) {
+			var sibOrderBottom = $(this).parent().siblings()
+			if (sibOrderBottom.hasClass("active")) {
+				sibOrderBottom.removeClass("active");
+				$(this).removeClass("active");
+			} else {
+				sibOrderBottom.addClass("active");
+				$(this).addClass("active");
+			}
+		});
+
+
+		$('.order-bottom-address').each(function (i, el) {
+			var ctxt = $(el).text().replace(/\(.*?\)/g, '');
+			$(this).text(ctxt.replace(" :", ':'))
+		});
+	});
+</script>

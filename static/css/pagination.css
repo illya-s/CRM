@@ -1,0 +1,30 @@
+#pagination {
+	display: grid;
+	/* grid-auto-columns: 1fr;
+	 */
+	 grid-template-columns: repeat(5, max-content);
+	grid-auto-columns: max-content;
+	grid-template-rows: max-content;
+	gap: 1rem;
+	align-items: center;
+	justify-content: center;
+
+	color: var(--txt-d-color);
+}
+
+.page-link {
+	width: 35px; height: 35px;
+	padding: 5px;
+
+	display: grid;
+	place-content: center;
+	aspect-ratio: 1;
+
+	border: none;
+	border-radius: 10px;
+	background-color: var(--bn-color);
+}
+.page-link svg {
+	width: 100%; height: auto;
+	aspect-ratio: 1;
+}

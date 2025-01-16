@@ -1,0 +1,166 @@
+.order-list {
+	width: 100%;
+	overflow-y: auto;
+
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+.order-list * {
+	font-size: .92em;
+}
+
+.order-header {
+	color: var(--txt-l-color);
+	font-weight: bold;
+}
+.order-block {
+	color: var(--txt-l-color);
+}
+
+.order-header, .order-block, .order-top, .order-bottom {
+	display: grid;
+	gap: .5rem;
+}
+.order-header, .order-block {
+	padding: 10px;
+
+	border-radius: 10px;
+	background-color: var(--bl-d-color);
+}
+
+
+.order-block {
+	grid-template-rows: max-content max-content;
+}
+.order-block.order-white {
+	background-color: #FFF;
+	color: var(--txt-l-color);
+}.order-block.order-yellow {
+	background-color: #FF0;
+	color: var(--txt-l-color);
+}.order-block.order-red {
+	background-color: #F00;
+	color: var(--txt-d-color);
+}.order-block.order-green {
+	background-color: #0F0;
+	color: var(--txt-l-color);
+}
+
+.order-header, .order-top, .order-bottom {
+	grid-template-columns: 14px .25fr 1fr 1fr 1fr .65fr repeat(3, .5fr) .5fr 35px;
+	align-items: center;
+	justify-items: center;
+}
+.order-bottom {
+	transition: height .25s linear;
+}
+.order-bottom.active {
+	display: grid;
+}
+
+
+
+
+
+
+.order-top-client-info {
+	display: flex;
+	flex-direction: column;
+}
+.order-top-client-name, .order-top-client-phone {
+	text-align: center;
+}
+
+.order-top-ttn-data {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+.order-top-ttn-data > * {
+	text-align: center;
+}
+
+
+.order-bottom {
+	display: none;
+}
+.order-bottom-product {
+	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	align-items: center;
+	justify-content: center;
+}
+.order-bottom-product > p:last-of-type {
+	grid-column: 1 / 3;
+}
+.order-bottom-client-check, .order-bottom-check {
+	max-width: 50px;
+}
+.order-bottom-check {
+	grid-column: 8 / 11;
+}
+
+
+.order-product-img {
+	grid-column: 1 / 3;
+
+	border-radius: 5px;
+}
+.order-product {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+.order-product > p {
+	text-align: center;
+}
+
+
+.edit-order-link, .open-bottom-btn {
+	padding: 7px;
+
+	display: grid;
+	place-content: center;
+	aspect-ratio: 1;
+
+	border-radius: 10px;
+	background-color: transparent;
+
+	transition: background-color .2s linear;
+
+	&:hover {
+		background-color: #FFFFFFFF;
+	}
+	& > svg {
+		width: 100%; height: auto;
+	}
+}
+.open-bottom-btn {
+	transition: rotate .25s linear, background-color .2s linear;
+}
+.open-bottom-btn.active {
+	rotate: 180deg;
+}
+
+
+@media screen and (max-width: 720px) {
+	.mobile-hide {
+		display: none;
+	}
+	.order-header, .order-top, .order-bottom {
+		grid-template-columns: 14px .25fr 1fr 1fr .75fr .5fr 35px;
+	}
+	.order-list * {
+		font-size: .9em;
+	}
+
+	.order-bottom-product {
+		grid-column: 1 / 4;
+	}
+	.order-bottom-address {
+		grid-column: 5 / 7;
+	}
+}

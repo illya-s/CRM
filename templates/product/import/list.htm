@@ -1,0 +1,132 @@
+<div class="suppliers-header">
+	<p></p>
+	<p>Название</p>
+	<p>Ссылка загрузки</p>
+	<p class="s-center">Авто загрузка</p>
+	<p></p>
+</div>
+
+{% for supplier in suppliers %}
+<div class="supplier" data-id="{{ supplier.id }}" data-url="{% url 'upd_supplier' supplier.id %}">
+	<div class="supplier-logo">
+		{% if supplier.image %}
+		<img src="{{ supplier.image.url }}" alt="">
+		{% else %}
+		<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<g clip-path="url(#clip0_295_2)">
+				<rect width="512" height="512" rx="150" fill="black"/>
+				<circle cx="124" cy="124" r="64" fill="white"/>
+				<path d="M-6 457.5L150.871 311.001C163.986 298.753 184.848 300.681 195.495 315.125L228.54 359.953C234.349 367.834 246.029 368.127 252.226 360.548L366.412 220.904C379.299 205.144 403.807 206.523 414.844 223.63L528 399" stroke="white" stroke-width="35"/>
+			</g>
+			<defs>
+				<clipPath id="clip0_295_2">
+					<rect width="512" height="512" rx="150" fill="white"/>
+				</clipPath>
+			</defs>
+		</svg>
+		{% endif %}
+	</div>
+
+	<p>{{ supplier.name }}</p>
+
+	<p>{{ supplier.import_url }}</p>
+
+	<label class="slide-toggle s-center">
+		<input class="toggle-auto-load" type="checkbox" {% if supplier.auto_import %}checked{% endif %}>
+
+		<div class="slide-toggle-mark"></div>
+	</label>
+
+	<button class="load-supplier-products-btn" data-url="{% url 'load_supplier_products' supplier.id %}">
+		<svg class="load-svg active" width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M341.333 25C341.333 11.1929 330.14 0 316.333 0H195.667C181.86 0 170.667 11.1929 170.667 25V72H341.333V25Z" fill="white"/>
+			<path d="M170.667 324.667H59.9229C50.5354 324.667 46.3213 336.434 53.5746 342.393L243.843 498.725C253.194 506.408 266.707 506.289 275.922 498.443L459.315 342.28C466.396 336.251 462.132 324.667 452.832 324.667H341.333V103.333H170.667V324.667Z" fill="white"/>
+		</svg>
+		<svg class="success-svg" width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M49 243L207 427L474 69" stroke="white" stroke-width="60"/>
+		</svg>
+	</button>
+</div>
+{% endfor %}
+
+<script>
+	$(function () {
+		const editImportUrl = $('meta[name="editImport"]').attr('content')
+		
+		$(".toggle-auto-load").on('change', function (e) {
+			var id = $(this).parent().parent().data('id')
+			var s = $(this).is(':checked');
+
+			$.ajax({
+				type: "POST",
+				url: editImportUrl,
+				data: { id: id, s: s },
+				dataType: "dataType",
+				success: function (response) {}
+			});
+		})
+
+
+		var currentContMenu;
+
+		$(document).on('contextmenu', '.supplier', function (e) {
+			e.preventDefault();
+
+			currentContMenu = $(this);
+
+			var menuWidth = $('#custom-menu').outerWidth();
+			var menuHeight = $('#custom-menu').outerHeight();
+			
+			var windowWidth = $(window).width();
+			var windowHeight = $(window).height();
+			
+			var mouseX = e.pageX;
+			var mouseY = e.pageY;
+			
+			if (mouseX + menuWidth > windowWidth) {
+				mouseX = windowWidth - menuWidth;
+			}
+			
+			if (mouseY + menuHeight > windowHeight) {
+				mouseY = windowHeight - menuHeight;
+			}
+
+			$("#custom-menu").css({
+				top: mouseY + "px",
+				left: mouseX + "px",
+			}).show();
+		})
+
+		$(document).click(function(e) {
+			if (!$(e.target).closest("#custom-menu").length) {
+				$("#custom-menu").hide();
+			}
+		});
+
+
+		$("#customMenuUpdBtn").on('click', function (e) {
+			window.location.href = currentContMenu.data('url');
+		});
+		$("#customMenuDelBtn").on('click', function (e) {
+			$.ajax({
+				type: "POST",
+				url: $('meta[name="delSupplierUrl"]').attr('content'),
+				data: { sID: currentContMenu.data('id') },
+				success: function (response) {
+					load_list()
+				}
+			});
+			$("#custom-menu").hide();
+		});
+		$('.load-supplier-products-btn').on('click', function (e) {
+			var url = $(this).data('url')
+			$.ajax({
+				type: "POST",
+				url: url,
+				success: function (response) {
+					load_list()
+				}
+			});
+		})
+	});
+</script>

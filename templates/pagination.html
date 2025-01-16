@@ -1,0 +1,30 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+
+{% if page.has_previous %}
+	<button class="page-link" data-page="1">
+		<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M438 448L230 256L438 64" stroke="#191F25" stroke-width="50" stroke-linecap="round"/>
+			<path d="M281 448L73 256L281 64" stroke="#191F25" stroke-width="50" stroke-linecap="round"/>
+		</svg>
+	</button>
+	<button class="page-link" data-page="{{ page.previous_page_number }}">
+		<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M360 448L152 256L360 64" stroke="#191F25" stroke-width="50" stroke-linecap="round"/>
+		</svg>
+	</button>
+{% endif %}
+<span class="current">{{ page.number }} / {{ page.paginator.num_pages }}</span>
+{% if page.has_next %}
+	<button class="page-link" data-page="{{ page.next_page_number }}">
+		<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M152 64L360 256L152 448" stroke="#191F25" stroke-width="50" stroke-linecap="round"/>
+		</svg>
+	</button>
+	<button class="page-link" data-page="{{ page.paginator.num_pages }}">
+		<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M74 64L282 256L74 448" stroke="#191F25" stroke-width="50" stroke-linecap="round"/>
+			<path d="M231 64L439 256L231 448" stroke="#191F25" stroke-width="50" stroke-linecap="round"/>
+		</svg>
+	</button>
+{% endif %}

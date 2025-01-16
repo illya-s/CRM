@@ -1,0 +1,17 @@
+{% for product in products %}
+
+<div class="product">
+	<img class="product-img" src="{{ product.image }}" alt="">
+
+	<div class="product-top">
+		<p class="product-name">{{ product.name }}</p>
+
+		<div class="product-supplier-info">
+			<p class="product-article">{{ product.article }}</p>
+		</div>
+
+		<p class="product-price">{{ product.price }}&nbsp;<span>UAN</span></p>
+	</div>
+</div>
+
+{% endfor %}

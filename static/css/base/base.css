@@ -1,0 +1,165 @@
+body {
+	display: grid;
+	grid-template-columns: max-content auto;
+
+	overflow-y: hidden;
+
+	background-color: var(--bg-color);
+}
+
+
+
+header {
+	display: none;
+}
+
+
+
+nav {
+	width: max-content;
+	width: 100%;
+	height: 100vh;
+	padding: 1rem;
+
+	display: grid;
+	grid-template-rows: max-content auto max-content;
+	gap: 1rem;
+
+	background-color: var(--hd-color);
+}
+
+nav > section {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+
+nav > section > div {
+	margin: 0 0 0 1rem;
+
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+
+
+
+nav * {
+	color: var(--txt-bn-color);
+}
+
+nav a, nav button {
+	padding: 7px 15px;
+
+
+	border: solid 2px var(--bn-color);
+	border-radius: 15px;
+	background-color: transparent;
+
+	text-decoration: none;
+	color: var(--txt-bn-color);
+	font-size: 1.1em;
+	user-select: none;
+
+	transition: all .2s linear;
+
+	&.active {
+		background-color: var(--bn-color);
+		color: var(--txt-bn-color);
+	}
+	&:hover {
+		opacity: .6;
+		background-color: var(--bn-color);
+		color: var(--txt-bn-color);
+	}
+	&.active:hover {
+		opacity: 1;
+	}
+}
+
+.close-nav-bar {
+	display: none;
+}
+
+main {
+	padding: 1rem;
+	overflow-y: auto;
+}
+
+
+
+@media screen and (max-width: 720px) {
+	body {
+		grid-template-columns: subgrid;
+		grid-template-rows: max-content auto;
+	}
+
+	header {
+		position: sticky;
+		top: 0;
+
+		width: 100%;
+		padding: 10px 1rem;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1rem;
+
+		background-color: var(--hd-color);
+	}
+
+	.show-nav-bar {
+		width: 40px; height: 40px;
+		padding: 7px;
+
+		display: grid;
+		aspect-ratio: 1;
+		place-content: center;
+
+		border: none;
+		border-radius: 10px;
+		background-color: var(--bn-color);
+	}
+	.show-nav-bar > svg {
+		width: 100%; height: 100%;
+	}
+
+	header > h2 {
+		font-size: 1.3em;
+		color: var(--txt-bn-color);
+	}
+
+
+	nav {
+		position: fixed;
+		left: -100%;
+
+		width: 100%;
+
+		transition: left .2s linear;
+
+		&.active {
+			left: 0;
+		}
+	}
+
+	.close-nav-bar {
+		position: absolute;
+		top: 10px; right: 10px;
+
+		width: 40px; height: 40px;
+		padding: 10px;
+
+		display: grid;
+		aspect-ratio: 1;
+		place-content: center;
+
+		border: none;
+		border-radius: 50%;
+		background-color: var(--bn-color);
+	}
+	.close-nav-bar > svg {
+		width: 100%; height: 100%;
+	}
+}

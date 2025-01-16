@@ -1,0 +1,50 @@
+{% extends "base/base.htm" %}
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/product/my_products.css' %}">
+
+<meta name="page" content="{{ page }}">
+<meta name="delMyProductUrl" content="{% url 'del_my_product' %}">
+{% endblock %}
+
+{% block content %}
+<section class="top-menu">
+	<div class="top-menu-search">
+		<input class="top-menu-search-input" type="search" name="" id="searchProduct" placeholder="Название или ID ...">
+		<button class="top-menu-search-btn" id="searchBtn">
+			<svg width="513" height="513" viewBox="0 0 513 513" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M225.779 389.62C316.266 389.62 389.619 316.267 389.619 225.78C389.619 135.294 316.266 61.9402 225.779 61.9402C135.293 61.9402 61.9395 135.294 61.9395 225.78C61.9395 316.267 135.293 389.62 225.779 389.62Z" stroke="white" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M430.581 430.58L348.661 348.66" stroke="white" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		</button>
+	</div>
+	<select class="top-menu-select" name="" id="EPP">
+		<option value="25">25</option>
+		<option value="50">50</option>
+		<option value="100">100</option>
+	</select>
+	<a href="{% url 'add_my_product' %}" class="add-product-btn" id="addProductBtn">
+		<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="14" width="5" height="34" rx="2.5" fill="#FFFFFF"/>
+			<rect y="19" width="5" height="34" rx="2.5" transform="rotate(-90 0 19)" fill="#FFFFFF"/>
+		</svg>
+	</a>
+</section>
+
+<section class="product-list list-cont" id="productList" data-url="{% url 'my_product_list' %}"></section>
+<section id="pagination"></section>
+
+<menu class="custom-menu" id="custom-menu">
+	<div class="custom-menu-btns">
+		<button class="custom-menu-btn" id="customMenuUpdBtn">Редактировать</button>
+		<button class="custom-menu-btn" id="customMenuDelBtn">Удалить</button>
+	</div>
+</menu>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/add_csrftoken.js' %}"></script>
+<script src="{% static 'js/product/my_products.js' %}"></script>
+{% endblock %}

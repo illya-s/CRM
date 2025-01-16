@@ -1,0 +1,134 @@
+main {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+
+.profile-info-wrapper, .user-list-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+
+.user-list-top, .profile-info-top,
+.profile-info, .user, .user-top {
+	padding: 10px;
+
+	border-radius: 15px;
+	background-color: var(--bl-d-color);
+}
+
+
+.user-list-top, .profile-info-top {
+	display: grid;
+	grid-template-columns: auto 35px;
+	align-items: center;
+}
+
+.user-list-top > h2, .profile-info-top > h2 {
+	font-size: 1.3rem;
+	font-weight: normal;
+}
+.add-user-link {
+	padding: 5px;
+	display: grid;
+	aspect-ratio: 1;
+
+	border-radius: 50%;
+	background-color: var(--bn-color);
+	
+	transition: opacity .2s linear;
+
+	&:hover {
+		opacity: .6;
+	}
+}
+.add-user-link > svg {
+	width: 100%; height: 100%;
+}
+
+
+
+.profile-info, .user-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	color: var(--l-txt-color);
+}
+
+.user-top, .user {
+	display: grid;
+	grid-template-columns: 1fr .75fr .5fr;
+	align-items: center;
+	gap: 1rem;
+}
+.user-top *:first-of-type, .user *:first-of-type {
+	text-align: start;
+}
+.user-top *:last-of-type, .user *:last-of-type {
+	text-align: end;
+}
+
+/* .edit-user-link {
+	padding: 9px;
+
+	display: grid;
+	aspect-ratio: 1;
+	place-content: center;
+
+	border-radius: 50%;
+	background-color: var(--bn-color);
+}
+.edit-user-link > svg {
+	width: 100%; height: 100%;
+} */
+
+
+.custom-menu {
+	position: fixed;
+	z-index: 9999;
+
+	padding: 5px;
+
+	display: none;
+
+	outline: solid 3px var(--bn-color);
+	border-radius: 10px;
+	background-color: var(--bl-d-color);
+}
+.custom-menu-btns {
+	display: flex;
+	flex-direction: column;
+	gap: .2rem;
+}
+.custom-menu-btn {
+	padding: 2px 4px;
+
+	display: grid;
+	grid-template-columns: 20px auto;
+	align-items: center;
+	gap: 10px;
+
+	border: none;
+	border-radius: 5px;
+	background-color: var(--bn-color);
+
+	color: var(--txt-bn-color);
+	font-size: 1rem;
+	text-align: start;
+
+	transition: opacity .2s linear;
+
+	&:hover {
+		opacity: .6;
+	}
+}
+.btn-icon {
+	padding: 2px;
+}
+.btn-icon > svg {
+	width: 100%; height: 100%;
+}

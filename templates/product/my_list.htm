@@ -1,0 +1,72 @@
+{% for product in products %}
+<div class="product" data-id="{{ product.id }}" data-url="{% url 'upd_my_product' product.id %}">
+	<img class="product-img" src="{{ product.image.url }}" alt="">
+
+	<div class="product-top">
+		<p class="product-name">{{ product.name }}</p>
+
+		<div class="product-supplier-info">
+			<p class="product-article">{{ product.article }}</p>
+		</div>
+
+		<p class="product-price">{{ product.price }}&nbsp;<span>UAN</span></p>
+	</div>
+</div>
+{% endfor %}
+
+
+<script>
+	$(function () {
+		var currentContMenu;
+
+		$(document).on('contextmenu', '.product', function (e) {
+			e.preventDefault();
+
+			currentContMenu = $(this);
+
+			var menuWidth = $('#custom-menu').outerWidth();
+			var menuHeight = $('#custom-menu').outerHeight();
+			
+			var windowWidth = $(window).width();
+			var windowHeight = $(window).height();
+			
+			var mouseX = e.pageX;
+			var mouseY = e.pageY;
+			
+			if (mouseX + menuWidth > windowWidth) {
+				mouseX = windowWidth - menuWidth;
+			}
+			
+			if (mouseY + menuHeight > windowHeight) {
+				mouseY = windowHeight - menuHeight;
+			}
+
+			$("#custom-menu").css({
+				top: mouseY + "px",
+				left: mouseX + "px",
+			}).show();
+		})
+
+		$(document).click(function(e) {
+			if (!$(e.target).closest("#custom-menu").length) {
+				$("#custom-menu").hide();
+			}
+		});
+
+
+		$("#customMenuUpdBtn").on('click', function (e) {
+			window.location.href = currentContMenu.data('url');
+		});
+		$("#customMenuDelBtn").on('click', function (e) {
+			$.ajax({
+				type: "POST",
+				url: $('meta[name="delMyProductUrl"]').attr('content'),
+				data: { pID: currentContMenu.data('id') },
+				success: function (response) {
+					load_list()
+				}
+			});
+			$("#custom-menu").hide();
+		});
+	});
+</script>

@@ -1,0 +1,86 @@
+{% extends "base/base.htm" %}
+{% load static %}
+
+
+{% block style %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/order/form.css' %}">
+<meta name="page" content="{{ page }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="form-top">
+	<a class="form-top-back-btn" href="{% url 'orders' %}">
+		<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M360 448L152 256L360 64" stroke="#F0E9E6" stroke-width="50" stroke-linecap="round"/>
+		</svg>
+	</a>
+	<h1>Добавить заказ</h1>
+</div>
+
+
+<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+
+
+	<div class="form-product-wraper">
+		{{ form.inID }}
+		{{ form.product }}
+	</div>
+
+	<div class="form-price-wraper">
+		{{ form.price }}
+		{{ form.amount }}
+	</div>
+	
+	<div class="form-client-full-name-wraper">
+		{{ form.client_name }}
+		{{ form.client_surname }}
+		{{ form.client_patronymic }}
+	</div>
+	{{ form.client_phone }}
+
+
+	<div class="image-wrapper">
+		<div class="file-input-wrapper">
+			<div class="image-upload-wrapper">
+				<!-- {{ form.client_check.name }} -->
+				{{ form.client_check }}
+				<div class="image-preview">
+					<img src="" alt="Image Preview" class="image-preview-img" />
+					<span class="image-preview-placeholder">Выберите чек для клиента</span>
+				</div>
+			</div>
+		</div>
+	
+		<div class="file-input-wrapper">
+			<div class="image-upload-wrapper">
+				{{ form.bank_check }}
+				<div class="image-preview">
+					<img src="" alt="Image Preview" class="image-preview-img" />
+					<span class="image-preview-placeholder">Выберите чек</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-ttn-wraper">
+		{{ form.ttn }}
+		{{ form.payment }}
+	</div>
+
+	<button type="submit">Соханить</button>
+</form>
+
+
+<!-- 20 4004 1864 9950 -->
+
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'js/jquery.mask.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'js/order/form.js' %}"></script>
+{% endblock %}

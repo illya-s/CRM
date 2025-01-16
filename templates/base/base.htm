@@ -1,0 +1,89 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+	<meta name="page_name" content="{{ page }}">
+
+	<link rel="stylesheet" href="{% static 'css/reset.css' %}">
+	<link rel="stylesheet" href="{% static 'css/colors.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+	<title>{{ page_name }}</title>
+	{% block style %}
+	{% endblock %}
+</head>
+<body>
+	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+
+	<header>
+		<button class="show-nav-bar" id="showNavBar">
+			<svg width="400" height="325" viewBox="0 0 400 325" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<rect width="400" height="67.0157" rx="33.5079" fill="white"/>
+				<rect y="129" width="400" height="65.9686" rx="32.9843" fill="white"/>
+				<rect y="257" width="400" height="67.0157" rx="33.5079" fill="white"/>
+			</svg>
+		</button>
+
+		<h2>{{ page_name }}</h2>
+	</header>
+
+	<nav>
+		<button class="close-nav-bar" id="closeNavBar">
+			<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<g clip-path="url(#clip0_147_2)">
+					<rect x="-2.57373" y="472.176" width="672" height="60" rx="30" transform="rotate(-45 -2.57373 472.176)" fill="#F0E9E6"/>
+					<rect x="39.4263" y="-2.82425" width="672" height="60" rx="30" transform="rotate(45 39.4263 -2.82425)" fill="#F0E9E6"/>
+				</g>
+				<defs>
+					<clipPath id="clip0_147_2">
+						<rect width="512" height="512" fill="white"/>
+					</clipPath>
+				</defs>
+			</svg>
+		</button>
+		<section class="product-links">
+			<h3 class="section-title">Товары</h3>
+
+			<a href="{% url 'my_products' %}">Мои</a>
+	
+			<a href="{% url 'products' %}">Поставщика</a>
+
+			<div>
+				{% if suppliers %}
+					{% for supplier in suppliers %}
+					<button class="supplier-products" data-url="{% url 'product_list' supplier.id %}">{{ supplier.name }}</>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</section>
+
+		<section class="order-links">
+			<h3 class="section-title">Заказы</h3>
+
+			<a href="{% url 'orders' %}">Заказы</a>
+		</section>
+		
+		<section class="user-links">
+			<h3 class="section-title">Пользователь</h3>
+			<a href="{% url 'profile' %}" data-id="profile">Профиль</a>
+		</section>
+		<!-- <a href="#">Заказы</a> -->
+	</nav>
+
+	<main>
+		{% block content %}
+		{% endblock %}
+	</main>
+
+	<script src="{% static 'js/base/base.js' %}"></script>
+	{% block script %}
+	{% endblock %}
+</body>
+</html>

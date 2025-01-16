@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+	<link rel="stylesheet" href="{% static 'css/reset.css' %}">
+	<link rel="stylesheet" href="{% static 'css/colors.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/base/auth.css' %}">
+	<link rel="stylesheet" href="{% static 'css/user/form.css' %}">
+	<title>{{ page_name }}</title>
+	{% block style %}
+	{% endblock %}
+</head>
+<body>
+	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+	<main>
+		{% block content %}
+		{% endblock %}
+	</main>
+
+	{% block script %}
+	{% endblock %}
+</body>
+</html>
