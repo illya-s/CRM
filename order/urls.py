@@ -6,7 +6,8 @@ urlpatterns = [
     path('', views.orders, name='orders'),
     path('list/', views.order_list, name='order_list'),
 
-    path('a/', views.create_order, name='create_order'),
+    path('m/l/', views.get_model_list, name='get_model_list'),
+    path('a/', views.add_order, name='create_order'),
     path('e/<int:pk>/', views.edit_order, name='edit_order'),
     path('d/', views.del_orders, name="del_orders"),
 

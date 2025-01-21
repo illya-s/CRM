@@ -31,12 +31,18 @@
 
 	<p>{{ supplier.import_url }}</p>
 
+	{% if supplier.import_url %}
 	<label class="slide-toggle s-center">
 		<input class="toggle-auto-load" type="checkbox" {% if supplier.auto_import %}checked{% endif %}>
 
 		<div class="slide-toggle-mark"></div>
 	</label>
+	{% else %}
+	<p></p>
+	{% endif %}
 
+
+	{% if supplier.import_url %}
 	<button class="load-supplier-products-btn" data-url="{% url 'load_supplier_products' supplier.id %}">
 		<svg class="load-svg active" width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M341.333 25C341.333 11.1929 330.14 0 316.333 0H195.667C181.86 0 170.667 11.1929 170.667 25V72H341.333V25Z" fill="white"/>
@@ -46,6 +52,9 @@
 			<path d="M49 243L207 427L474 69" stroke="white" stroke-width="60"/>
 		</svg>
 	</button>
+	{% else %}
+	<p></p>
+	{% endif %}
 </div>
 {% endfor %}
 

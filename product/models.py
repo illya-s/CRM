@@ -42,18 +42,18 @@ class Supplier(models.Model):
 def myp_upload_to(instance, filename):
     return os.path.join('my_products', f"{instance.pk}_{datetime.datetime.now().strftime("%d_%m_%y")}", filename)
 
-class MyProduct(models.Model):
-    article = models.CharField(max_length=250, blank=True, null=True, verbose_name="Артикул")
-    name = models.CharField(max_length=500, blank=False, null=True, verbose_name="Название")
+# class MyProduct(models.Model):
+#     article = models.CharField(max_length=250, blank=True, null=True, verbose_name="Артикул")
+#     name = models.CharField(max_length=500, blank=False, null=True, verbose_name="Название")
 
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Цена")
-    image = models.ImageField(upload_to=myp_upload_to, blank=True, null=True)
+#     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Цена")
+#     image = models.ImageField(upload_to=myp_upload_to, blank=True, null=True)
 
-    created = models.DateTimeField(auto_now_add=True, null=True)
-    updated = models.DateTimeField(auto_now=True, null=True)
+#     created = models.DateTimeField(auto_now_add=True, null=True)
+#     updated = models.DateTimeField(auto_now=True, null=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 

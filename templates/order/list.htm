@@ -16,7 +16,7 @@
 
 
 {% for order in orders %}
-<div class="order-block order-{{ order.id }}" data-id="{{ order.id }}" data-code="{{ order.ttn_data.code }}"> <!-- {{ order.ttn_data.name }} -->
+<div class="order-block order-{{ order.id }}" data-id="{{ order.id }}" data-code="{{ order.ttn_status_code }}">
 	<div class="order-top">
 		<div class="order_check">
 			<input class="checkbox" type="checkbox" data-id="{{ order.id }}" name="" id="checkbox_{{ order.id }}" >
@@ -29,7 +29,7 @@
 		</p>
 		<div class="order-top-ttn-data">
 			<a href="{{ order.ttnLink }}" target="_blank">{{ order.ttn }}</a>
-			<p>{{ order.ttn_data.name }}</p>
+			<p>{{ order.ttn_status }}</p>
 		</div>
 		<p class="payment">{{ order.payment }}</p>
 
@@ -48,10 +48,10 @@
 	</div>
 
 	<div class="order-bottom">
-		<img class="mobile-hide order-product-img" src="{{ order.product.img }}" alt="">
+		<p></p>
+		<p></p>
 		<div class="order-bottom-product">
 			<p>{{ order.product.article }}</p>
-			<p>{{ order.product.gender }}</p>
 			<p>{{ order.product.supplier }}</p>
 		</div>
 		<p class="order-bottom-client-check">
@@ -59,7 +59,7 @@
 			<a href="{{ order.client_check.url }}" target="_blank"><img src="{{ order.client_check.url }}" alt=""></a>
 			{% endif %}
 		</p>
-		<p class="order-bottom-address">{% if order.client_address %}{{ order.client_address }}{% endif %}</p>
+		<p class="order-bottom-address">{{ order.ttn_address }}</p>
 		<p class="mobile-hide"></p>
 		<p class="mobile-hide order-bottom-check">
 			{% if order.bank_check %}

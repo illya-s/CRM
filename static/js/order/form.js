@@ -10,11 +10,31 @@ $(document).ready(function () {
 	}
 
 
-	const idProduct = $("#id_product");
-	idProduct.select2({
+	$('#id_product').select2({
 		placeholder: 'Выберите продукт',
 		allowClear: true
 	});
+
+	$("#id_content_type").on('change', function (e) {
+		const mID = $(this).val();
+		$.ajax({
+			type: "GET",
+			url: $('meta[name="modelListUrl"]').attr('content'),
+			data: { mID: mID },
+			success: function (response) {
+				var li = []
+
+				$.each(response.models, function (i, element) {
+					var el = $('<option>', {
+						value: this.id
+					}).text(this.name)
+					li.push(el)
+				});
+
+				$("#id_object_id").html(li)
+			}
+		});
+	})
 
 
 	const imagePreview = $('.image-preview')

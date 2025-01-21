@@ -159,19 +159,30 @@ form {
 	display: flex;
 	flex-direction: column;
 	gap: .5rem;
+
 }
-.form-price-wraper, .form-product-wraper, .image-wrapper {
+.form-price-wraper, .form-product-wraper, .image-wrapper,
+.form-client-full-name-wraper, .form-ttn-wraper {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
 	gap: .5rem;
+}
+.form-price-wraper, .form-product-wraper, .image-wrapper,
+.form-product-wraper {
+	grid-template-columns: 1fr 1fr;
+}
+.form-price-wraper {
+	grid-template-columns: .25fr 2fr 2fr;
 }
 .form-client-full-name-wraper {
-	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	gap: .5rem;
 }
 .form-ttn-wraper {
-	display: grid;
 	grid-template-columns: 2fr 1fr;
-	gap: .5rem;
+}
+
+
+#id_object_id {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }

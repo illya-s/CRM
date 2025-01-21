@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import *
 from .forms import *
+from .tasks import *
 
 import requests, auth
 from config import np_url, api_key
@@ -25,38 +26,38 @@ def orders(request):
     return render(request, 'order/orders.htm', data)
 
 
-def get_ttn_data(ttn_list:list):
-    headers = { 'Content-Type': 'application/json', 'Api-Key': api_key }
+# def get_ttn_data(ttn_list:list):
+#     headers = { 'Content-Type': 'application/json', 'Api-Key': api_key }
 
-    tl = [ { "DocumentNumber": ''.join(ttn.split(" ")) } for ttn in ttn_list if ttn is not None ]
-    # ttn_list = list(filter(lambda x: x is not None, my_list))
-    if not tl:
-        return [None] * len(ttn_list)
+#     tl = [ { "DocumentNumber": ''.join(ttn.split(" ")) } for ttn in ttn_list if ttn is not None ]
+#     # ttn_list = list(filter(lambda x: x is not None, my_list))
+#     if not tl:
+#         return [None] * len(ttn_list)
 
-    data = {
-        "modelName": "TrackingDocumentGeneral",
-        "calledMethod": "getStatusDocuments",
-        "methodProperties": {
-            "Documents": tl
-        }
-    }
-    response = requests.get(np_url, json=data, headers=headers)
+#     data = {
+#         "modelName": "TrackingDocumentGeneral",
+#         "calledMethod": "getStatusDocuments",
+#         "methodProperties": {
+#             "Documents": tl
+#         }
+#     }
+#     response = requests.get(np_url, json=data, headers=headers)
 
-    ststus = []
+#     ststus = []
 
-    if response.status_code == 200:
-        for el in response.json()['data']:
-            if el["StatusCode"] == "1":
-                st = "Очікування відправки"
-            elif el["StatusCode"] in ["9", "10", "11"]:
-                st = "Отримано"
-            else:
-                st = el["Status"]
-            ststus.append({ "code": el["StatusCode"], "name": st })
-    else:
-        ststus = None
+#     if response.status_code == 200:
+#         for el in response.json()['data']:
+#             if el["StatusCode"] == "1":
+#                 st = "Очікування відправки"
+#             elif el["StatusCode"] in ["9", "10", "11"]:
+#                 st = "Отримано"
+#             else:
+#                 st = el["Status"]
+#             ststus.append({ "code": el["StatusCode"], "name": st })
+#     else:
+#         ststus = None
 
-    return ststus
+#     return ststus
 
 
 def order_list(request):
@@ -64,19 +65,16 @@ def order_list(request):
         spp = request.GET.get('epp') if request.GET.get('epp') else 25
         page = int(request.GET.get('page')) if request.GET.get('page') else 1
 
-        ttn_list = get_ttn_data([ order.ttn if order.ttn else None for order in Order.objects.all() ])
-
         orders_obj = [
             {
                 **model_to_dict(order),
-                "product": model_to_dict(order.content_object),
+                "product": model_to_dict(order.product) if order.product else None,
                 "ttnLink": f"https://novaposhta.ua/tracking/?cargo_number={''.join(str(order.ttn).split(' '))}",
                 "payment": order.get_payment_display(),
                 "created": order.created.strftime("%d.%m.%y"),
-                "ttn_data": ttn_list[i],
                 "income": order.income()
             }
-            for i, order in enumerate(Order.objects.all())
+            for order in Order.objects.all()
         ]
         paginator = Paginator(orders_obj, spp)
 
@@ -100,27 +98,45 @@ def order_list(request):
         return Http404
 
 
+# @auth.login_required(redirect_url='login')
+def get_model_list(request):
+    if request.method == "GET":
+        content_type = get_object_or_404(ContentType, id=request.GET.get('mID'))
+        model_class = content_type.model_class()
+        mls = model_class.objects.all()
+        return JsonResponse({"models": [ {'id': ml.id, 'name': str(ml)} for ml in mls ]})
+    else:
+        return Http404
+
+
 @auth.login_required(redirect_url='login')
-def create_order(request):
+def add_order(request):
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+        form = OrderForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            get_ttn_status.delay(instance.pk)
             return redirect('orders')
+        return JsonResponse({ 'message': form.errors }, status=400)
     else:
         form = OrderForm()
-    return render(request, 'order/form.htm', {'form': form, 'page': "create_order"})
+        context = {
+            'form': form,
+            'page': "create_order"
+        }
+        return render(request, 'order/form.htm', context)
 
 @auth.login_required(redirect_url='login')
 def edit_order(request, pk):
-    book = get_object_or_404(Order, pk=pk)
+    order = get_object_or_404(Order, pk=pk)
     if request.method == 'POST':
-        form = OrderForm(request.POST, instance=book)
+        form = OrderForm(request.POST, instance=order)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            get_ttn_status.delay(instance.pk)
             return redirect('orders')
     else:
-        form = OrderForm(instance=book)
+        form = OrderForm(instance=order)
     return render(request, 'order/form.htm', {'form': form, 'page': "edit_order"})
 
 

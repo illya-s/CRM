@@ -47,6 +47,11 @@ $(document).ready(function () {
 		});
 	}
 
+
+	LIST.data('url', $('.supplier-products:first-of-type').data('url'))
+	load_list()
+
+
 	$('.supplier-products').on('click', function (e) {
 		var url = $(this).data('url');
 		LIST.data('url', url)

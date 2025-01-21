@@ -6,6 +6,7 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'css/order/form.css' %}">
 <meta name="page" content="{{ page }}">
+<meta name="modelListUrl" content="{% url 'get_model_list' %}">
 {% endblock %}
 
 {% block content %}
@@ -24,12 +25,10 @@
 	{% csrf_token %}
 
 
-	<div class="form-product-wraper">
-		{{ form.inID }}
-		{{ form.product }}
-	</div>
+	{{ form.product }}
 
 	<div class="form-price-wraper">
+		{{ form.inID }}
 		{{ form.price }}
 		{{ form.amount }}
 	</div>
@@ -73,13 +72,13 @@
 	<button type="submit">Соханить</button>
 </form>
 
-
 <!-- 20 4004 1864 9950 -->
 
 {% endblock %}
 
 
 {% block script %}
+<script src="{% static 'js/add_csrftoken.js' %}"></script>
 <script src="{% static 'js/jquery.mask.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{% static 'js/order/form.js' %}"></script>

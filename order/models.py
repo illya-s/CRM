@@ -50,9 +50,7 @@ class Order(models.Model):
     ]
     inID              = models.IntegerField(null=True, blank=True, verbose_name="Номер заказа")
 
-    content_type      = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, verbose_name="Тип объекта")
-    object_id         = models.PositiveIntegerField(verbose_name="ID объекта", null=True)
-    content_object    = GenericForeignKey('content_type', 'object_id')
+    product           = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
     price             = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="РЦ")
     amount            = models.IntegerField(null=True, blank=False, verbose_name="Количество")
@@ -63,9 +61,10 @@ class Order(models.Model):
     client_phone      = models.CharField(max_length=50, null=True, verbose_name="Телефон")
     client_check      = models.ImageField(verbose_name="Чек клиента", upload_to=upload_to, blank=True, null=True)
 
-    ttn               = models.CharField(verbose_name="TTN",        max_length=100,  null=True, blank=True)
-    ttn_status        = models.CharField(verbose_name="TTN Status", max_length=500,  null=True, blank=True)
-    ttn_address       = models.CharField(verbose_name="TTN Addres", max_length=1000, null=True, blank=True)
+    ttn               = models.CharField(verbose_name="TTN", max_length=100, null=True, blank=True)
+    ttn_status_code   = models.IntegerField(null=True, blank=True)
+    ttn_status        = models.CharField(max_length=500,  null=True, blank=True)
+    ttn_address       = models.CharField(max_length=1000, null=True, blank=True)
     ttn_is_archive    = models.BooleanField(default=False, null=True)
 
     payment           = models.CharField(verbose_name="Оплата", max_length=5, choices=PAYMENTS, default="S", blank=True)
@@ -101,7 +100,7 @@ class Order(models.Model):
 
 
     def income(self):
-        return self.price-self.content_object.price if self.content_object and self.content_object.price else None
+        return self.price-self.product.price if self.product and self.product.price else None
 
     class Meta:
         verbose_name = 'Заказ'

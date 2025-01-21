@@ -12,4 +12,34 @@ $(document).ready(function () {
 	$('#showNavBar, #closeNavBar').on('click', function (e) {
 		$('nav').toggleClass('active');
 	})
+
+
+	const confirmPopupWraper = $("#confirmPopupWraper");
+	const confirmMessage = $("#confirmMessage");
+	const confirmOk = $("#confirmOk");
+	const confirmNo = $("#confirmNo");
+
+	window.confirmation = function (message) {
+		return new Promise((resolve) => {
+			confirmPopupWraper.addClass("active");
+
+			if (message) {
+				confirmMessage.text(message)
+			}
+
+			confirmPopupWraper.on('click', function (e) {
+				if (e.target === this) {
+					confirmNo.click();
+				}
+			});
+			confirmOk.on('click', function (e) {
+				confirmPopupWraper.removeClass("active");
+				resolve(true);
+			})
+			confirmNo.on('click', function (e) {
+				confirmPopupWraper.removeClass("active");
+				resolve(false);
+			})
+		});
+	};
 });
