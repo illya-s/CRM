@@ -61,9 +61,30 @@ $(document).ready(function () {
 	$(document).on('contextmenu', ".order-block", function(e) {
 		e.preventDefault();
 
+
+		currentContMenu = $(this);
+
+		var menuWidth = $('#custom-menu').outerWidth();
+		var menuHeight = $('#custom-menu').outerHeight();
+		
+		var windowWidth = $(window).width();
+		var windowHeight = $(window).height();
+		
+		var mouseX = e.pageX;
+		var mouseY = e.pageY;
+		
+		if (mouseX + menuWidth > windowWidth) {
+			mouseX = windowWidth - menuWidth;
+		}
+		
+		if (mouseY + menuHeight > windowHeight) {
+			mouseY = windowHeight - menuHeight;
+		}
+
+
 		$('.edit-menu-wraper').css({
-			top: e.pageY,
-			left: e.pageX
+			top: mouseY + "px",
+			left: mouseX + "px",
 		}).show();
 	});
 	$(document).on('click', function(e) {

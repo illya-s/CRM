@@ -1,0 +1,10 @@
+{% for expense in expenses %}
+
+<div class="expense-block" data-id="{{ expense.id }}">
+	<p>{{ expense.expense }}</p>
+	<p>{{ expense.price }}</p>
+	<p>{{ expense.description }}</p>
+	<p>{{ expense.date|date:"d.m.Y" }}</p>
+</div>
+
+{% endfor %}

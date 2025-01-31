@@ -1,4 +1,4 @@
-input[type="text"], input[type="number"], select, button[type="submit"] {
+input[type="text"], input[type="number"], select, button[type="submit"], input[type="date"] {
 	padding: 5px 10px;
 
 	border: none;
@@ -8,7 +8,7 @@ input[type="text"], input[type="number"], select, button[type="submit"] {
 	font-size: 1.1em;
 	color: var(--txt-bn-color);
 }
-input[type="text"], input[type="number"], select {
+input[type="text"], input[type="number"], input[type="date"], select {
 	outline-offset: 2px;
 	outline-color: var(--bn-color);
 	transition: outline .2s linear;
@@ -63,7 +63,13 @@ button[type="submit"] {
 
 
 input[type="file"] {
-	display: none;
+	padding: 10px;
+
+	border: dashed 2px var(--txt-d-color);
+	border-radius: 10px;
+	background-color: var(--bn-color);
+
+	color: var(--txt-bn-color);
 }
 .image-upload-wrapper {
 	height: 250px;

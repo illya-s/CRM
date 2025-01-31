@@ -1,0 +1,56 @@
+main {
+	padding: 20px;
+
+	display: grid;
+	grid-template-rows: max-content auto max-content;
+	gap: 1rem;
+}
+
+
+.top-menu {
+	padding: 10px;
+
+	display: grid;
+	grid-template-columns: auto max-content max-content;
+	gap: 1rem;
+	align-items: center;
+
+	border-radius: 10px;
+	background-color: var(--bl-d-color);
+}
+
+.top-menu > p {
+	color: var(--txt-l-color);
+	font-size: 1.2em;
+}
+
+
+.top-menu-select, .add-order-btn {
+	border: none;
+	background-color: var(--bn-color);
+
+	color: var(--txt-bn-color);
+}
+.top-menu-select {
+	height: 100%;
+	padding: 5px 10px;
+
+	border-radius: 10px;
+
+	font-size: 1em;
+	font-weight: bold;
+}
+.top-add-btn {
+	width: 30px;
+	height: 30px;
+	padding: 3px;
+
+	display: grid;
+	place-content: center;
+	aspect-ratio: 1;
+
+	border-radius: 50%;
+}
+.top-add-btn > svg {
+	width: 100%; height: auto;
+}

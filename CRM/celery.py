@@ -7,6 +7,13 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CRM.settings')
 
 app = Celery('CRM')
 app.config_from_object('django.conf:settings', namespace='CELERY')
+app.conf.timezone = 'Europe/Kyiv'
+
+app.conf.update(
+    broker_url='redis://localhost:6379/0',
+    broker_connection_retry_on_startup=True,
+)
+
 app.autodiscover_tasks()
 
 
@@ -16,7 +23,7 @@ app.conf.beat_schedule = {
     #     'schedule': crontab(minute=0) # , hour='*/1'
     # },
     'load_orders_ttn_data': {
-        'task': 'order.tasks.fetch_orders_data',
+        'task': 'order.tasks.get_ttns_status',
         'schedule': crontab(minute=0)
     }
 }

@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import JsonResponse, Http404
 from django.forms.models import model_to_dict
+from django.db.models import Count, Sum
+from django.db.models.functions import TruncDate
 from django.template.loader import render_to_string
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import *
 from .forms import *
 from .tasks import *
+
+from datetime import timedelta
+from django.utils import timezone
 
 import requests, auth
 from config import np_url, api_key
@@ -71,10 +76,10 @@ def order_list(request):
                 "product": model_to_dict(order.product) if order.product else None,
                 "ttnLink": f"https://novaposhta.ua/tracking/?cargo_number={''.join(str(order.ttn).split(' '))}",
                 "payment": order.get_payment_display(),
-                "created": order.created.strftime("%d.%m.%y"),
+                "updated": order.updated.strftime("%d.%m.%y") if order.updated else None,
                 "income": order.income()
             }
-            for order in Order.objects.all()
+            for order in Order.objects.all().order_by("-id")
         ]
         paginator = Paginator(orders_obj, spp)
 
@@ -114,7 +119,7 @@ def add_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST, request.FILES)
         if form.is_valid():
-            instance = form.save(commit=False)
+            instance = form.save()
             get_ttn_status.delay(instance.pk)
             return redirect('orders')
         return JsonResponse({ 'message': form.errors }, status=400)
@@ -130,9 +135,9 @@ def add_order(request):
 def edit_order(request, pk):
     order = get_object_or_404(Order, pk=pk)
     if request.method == 'POST':
-        form = OrderForm(request.POST, instance=order)
+        form = OrderForm(request.POST, request.FILES, instance=order)
         if form.is_valid():
-            instance = form.save(commit=False)
+            instance = form.save()
             get_ttn_status.delay(instance.pk)
             return redirect('orders')
     else:
@@ -171,6 +176,58 @@ def del_orders(request):
         return Http404
 
 
+
+def import_orders(request):
+    return render(request, "order/import.htm")
+
+
+@auth.login_required(redirect_url='login')
+def statistic(request):
+    today = datetime.datetime.now()
+    year_ago = datetime.datetime(today.year, 1, 1)
+
+    one_month_ago = today - timedelta(days=30)
+    
+    most_purchased_products = (
+        Product.objects.annotate(order_count=Count('order'))
+        .order_by('-order_count')[:5]
+    )
+    products_data = [
+        {'name': product.article if product.article else product.name, 'order_count': product.order_count}
+        for product in most_purchased_products
+    ]
+
+    sup_mpp = (
+        Supplier.objects.annotate(product_count=Count('supplier_products'))
+        .order_by('-product_count')[:5]
+    )
+    sup_data = [
+        {'name': supplier.name, 'product_count': supplier.product_count}
+        for supplier in sup_mpp
+    ]
+
+    sales_data = (
+        Order.objects.filter(date__range=(year_ago, today))
+        .annotate(day=TruncDate('date'))
+        .values('day')
+        .annotate(total_sales=Sum('amount'))
+        .order_by('day')
+    )
+    all_dates = [(year_ago + timedelta(days=i)).date().strftime('%d.%m') for i in range((today - year_ago).days + 1)]
+    sales_dict = {item['day'].strftime('%d.%m'): item['total_sales'] for item in sales_data}
+
+    filled_sales_data = [
+        {'day': date, 'total_sales': sales_dict.get(date, 0)} for date in all_dates
+    ]
+    filled_sales_data.reverse()
+
+    context = {
+        'orders': [{ **model_to_dict(order) } for order in Order.objects.filter(date__gte=one_month_ago)],
+        'products_data': products_data,
+        'sup_data': sup_data,
+        'by_day': filled_sales_data
+    }
+    return render(request, 'order/statistic/index.htm', context)
 
 
 

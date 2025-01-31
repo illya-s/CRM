@@ -2,14 +2,6 @@ from django import forms
 from .models import *
 
 
-def get_model_choices():
-    models_to_include = ['product.MyProduct', 'product.Product']
-    content_types = ContentType.objects.filter(
-        app_label__in=[model.split('.')[0] for model in models_to_include],
-        model__in=[model.split('.')[1].lower() for model in models_to_include]
-    )
-    return content_types
-
 class OrderForm(forms.ModelForm):
     remove_client_check = forms.BooleanField(required=False, label='Удалить изображение')
     remove_bank_check   = forms.BooleanField(required=False, label='Удалить изображение')
@@ -22,7 +14,10 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = "__all__"
+        fields = ["inID", "product", "price", "amount", "client_name", "client_surname", "client_patronymic", "client_phone", "client_check", "ttn", "payment", "bank_check", "date"]
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
+        }
 
     def save(self, commit=True):
         instance = super().save(commit=False)

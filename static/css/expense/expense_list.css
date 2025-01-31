@@ -1,0 +1,16 @@
+.expense-list {
+	display: flex;
+	flex-direction: column;
+	gap: .25rem;
+}
+
+.expense-block {
+	padding: 5px;
+
+	display: grid;
+	grid-template-columns: 1fr .5fr 2fr max-content;
+	gap: .25rem;
+
+	border-radius: 5px;
+	background-color: var(--bl-d-color);
+}

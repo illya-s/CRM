@@ -1,0 +1,21 @@
+{% extends "base/base.htm" %}
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+
+<meta name="page" content="{{ page }}">
+{% endblock %}
+
+
+{% block content %}
+
+
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/list.js' %}"></script>
+<script src="{% static 'js/order/orders.js' %}"></script>
+{% endblock %}

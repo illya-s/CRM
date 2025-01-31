@@ -60,6 +60,10 @@ $(document).ready(function () {
 	$('#id_client_phone').mask("+38 (000) 000-00-00");
 	$('#id_client_phone').attr("placeholder", "+38 (000) 000-00-00")
 
-	$('#id_ttn').mask("20 0000 0000 0000");
-	$('#id_ttn').attr("placeholder", "20 0000 0000 0000");
+	$('#id_ttn').mask("00 0000 0000 0000", {
+		translation: {
+			'0': { pattern: /[0-9]/, optional: true }
+		},
+		placeholder: "0 0000 0000 0000"
+	});
 });

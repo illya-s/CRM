@@ -73,10 +73,9 @@ main {
 
 
 .product-list {
-	width: 100%;
-
-	columns: 200px;
-	column-gap: .5rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: .5rem;
 }
 
 .product {
@@ -111,9 +110,9 @@ main {
 	text-overflow: ellipsis;
 }
 .product-supplier-info {
-	display: grid;
-	grid-template-columns: repeat(2, max-content);
-	gap: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: .05rem;
 	justify-content: space-between;
 }
 

@@ -46,9 +46,6 @@ $(document).ready(function () {
 			}
 		});
 	}
-
-
-	LIST.data('url', $('.supplier-products:first-of-type').data('url'))
 	load_list()
 
 

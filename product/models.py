@@ -33,9 +33,6 @@ class Supplier(models.Model):
             return root
         else:
             return None
-    def load_data(self):
-        fetch_data = self.fetch_data()
-        return None
 
 
 

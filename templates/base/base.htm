@@ -51,13 +51,13 @@
 		<section class="product-links">
 			<a href="{% url 'products' %}">Товары</a>
 
-			<div>
+			<!-- <div>
 				{% if suppliers %}
 					{% for supplier in suppliers %}
-					<button class="supplier-products" data-url="{% url 'product_list' supplier.id %}">{{ supplier.name }}</>
+					<button class="supplier-products">{{ supplier.name }}</>
 					{% endfor %}
 				{% endif %}
-			</div>
+			</div> -->
 
 			<a href="{% url 'import_sup_product' %}">Поставщики</a>
 		</section>
@@ -66,6 +66,14 @@
 			<h3 class="section-title">Заказы</h3>
 
 			<a href="{% url 'orders' %}">Заказы</a>
+			<a href="{% url 'statistic' %}">Статистика</a>
+			<!-- <a href="{% url 'import_orders' %}">Импорт</a> -->
+		</section>
+
+		<section class="expense-links">
+			<h3>Расходы</h3>
+
+			<a href="{% url 'expenses' %}">Расходы</a>
 		</section>
 		
 		<section class="user-links">

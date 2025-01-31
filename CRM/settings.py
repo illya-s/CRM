@@ -22,6 +22,7 @@ ALLOWED_HOSTS = config.ALLOWED_HOSTS
 INSTALLED_APPS = [
     'product',
     'order',
+    'expense',
     'webhook',
 
     'django_celery_beat',
@@ -96,7 +97,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'EET'
+TIME_ZONE = 'Europe/Kyiv'
 
 USE_I18N = True
 

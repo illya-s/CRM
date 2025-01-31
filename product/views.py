@@ -26,17 +26,23 @@ def products(request):
 
 
 @auth.login_required(redirect_url='login')
-def product_list(request, sID):
-    supplier = get_object_or_404(Supplier, id=sID)
+def product_list(request):
+    # supplier = get_object_or_404(Supplier, id=sID)
     spp = request.GET.get('epp') if request.GET.get('epp') else 25
     page = int(request.GET.get('page')) if request.GET.get('page') else 1
     query = request.GET.get('q')
 
     if query:
-        pList = supplier.supplier_products.filter(Q(article__icontains=query) | Q(name__icontains=query))
+        pList = Product.objects.filter(Q(article__icontains=query) | Q(name__icontains=query))
     else:
-        pList = supplier.supplier_products.all().order_by('article')
-    products = [{ **model_to_dict(product) } for product in pList ]
+        pList = Product.objects.all().order_by('article')
+    products = [
+        {
+            **model_to_dict(product),
+            'supplier': str(product.supplier)
+        }
+        for product in pList
+    ]
     paginator = Paginator(products, spp)
 
     try:

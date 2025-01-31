@@ -15,29 +15,26 @@ def fetch_supplier_data(sID):
         root = ET.parse(fetch_data)
         item_list = root.findall("item")
 
-        li = []
         for item in item_list:
-            data = {
-                "supplier": self,
+            author, created = Product.objects.get_or_create(article=item.find("barcode").text, defaults={
+                "supplier": supplier,
                 "article": item.find("barcode").text,
                 "name": item.find("name").text,
                 "price": int(item.find("priceuah").text) - 1,
                 "image": item.find("image").text
-            }
-            li.append(item.find("name").text)
-            author, created = Product.objects.get_or_create(article=item.find("barcode").text, defaults=data)
+            })
 
-        print(f'LOAD Data - {supplier.name}: {"None" if not li else li}')
+        print(f'LOAD Data - {supplier.name}')
     except Exception as e:
         print(f'LOAD Data Error: \n{e}')
 
-@app.task
-def fetch_suppliers_data():
-    for supplier in Supplier.objects.all():
-        if not supplier.auto_import:
-            name = supplier.name
-            print(f'LOAD Skipped: {name}')
-            continue
+# @app.task
+# def fetch_suppliers_data():
+#     for supplier in Supplier.objects.all():
+#         if not supplier.auto_import:
+#             name = supplier.name
+#             print(f'LOAD Skipped: {name}')
+#             continue
 
-        supplier.load_data()
-        print(f'LOAD Data - {supplier.name}')
+#         supplier.load_data()
+#         print(f'LOAD Data - {supplier.name}')

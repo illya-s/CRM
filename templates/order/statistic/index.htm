@@ -1,0 +1,156 @@
+{% extends "base/base.htm" %}
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/order/statistic.css' %}">
+
+<meta name="page" content="{{ page }}">
+{% endblock %}
+
+
+{% block content %}
+
+<canvas id="orderChart"></canvas>
+<canvas id="supplierChart"></canvas>
+<canvas id="orderByDay"></canvas>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+	$(document).ready(function() {
+		// Получаем данные из контекста Django
+		var productsData = {{ products_data|safe }};
+		var supplierData = {{ sup_data|safe }};
+
+		// Массивы для названий продуктов и количества заказов
+		var productNames = [];
+		var orderCounts = [];
+		// supplier
+		var supplierNames = [];
+		var supplierCounts = [];
+		// by_day
+		// Заполняем массивы
+		productsData.forEach(function(item) {
+			productNames.push(item.name);
+			orderCounts.push(item.order_count);
+		});
+		supplierData.forEach(function(item) {
+			supplierNames.push(item.name);
+			supplierCounts.push(item.product_count);
+		});
+
+		var ctx = document.getElementById('orderChart').getContext('2d');
+		var orderChart = new Chart(ctx, {
+			type: 'bar', // Тип графика (столбчатый)
+			data: {
+				labels: productNames, // Названия продуктов
+				datasets: [{
+					label: 'Order Count', // Название набора данных
+					data: orderCounts,    // Количество заказов
+					backgroundColor: 'rgba(54, 162, 235, 0.2)', // Цвет столбцов
+					borderColor: 'rgba(54, 162, 235, 1)',     // Цвет границы
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					y: { beginAtZero: true }
+				}
+			}
+		});
+
+		var ctx2 = document.getElementById('supplierChart').getContext('2d');
+		var supplierChart = new Chart(ctx2, {
+			type: 'bar',
+			data: {
+				labels: supplierNames,
+				datasets: [{
+					label: 'Supplier Count',
+					data: supplierCounts,
+					backgroundColor: 'rgba(54, 162, 235, 0.2)',
+					borderColor: 'rgba(54, 162, 235, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					y: { beginAtZero: true }
+				}
+			}
+		});
+
+
+		var orderByDay   = {{ by_day|safe }};
+		var by_dayNames = [];
+		var by_dayCounts = [];
+		orderByDay.forEach(function(item) {
+			by_dayNames.push(item.day);
+			by_dayCounts.push(item.total_sales);
+		});
+		var ctx3 = document.getElementById('orderByDay').getContext('2d');
+		var supplierChart = new Chart(ctx3, {
+			type: 'line',
+			data: {
+				labels: by_dayNames,
+				datasets: [{
+					label: 'Order Count',
+					data: by_dayCounts,
+					backgroundColor: 'rgba(54, 162, 235, 0.2)',
+					borderColor: 'rgba(54, 162, 235, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						labels: {
+							font: {
+								size: 14,
+								weight: 'bold',
+							},
+							color: '#333'
+						}
+					},
+					tooltip: {
+						bodyFont: {
+							size: 12,
+						},
+						titleFont: {
+							size: 14
+						}
+					}
+				},
+				scales: {
+					x: {
+						ticks: {
+						font: {
+							size: 12
+						},
+						color: '#555'
+						}
+					},
+					y: {
+						beginAtZero: true,
+						ticks: {
+							font: {
+								size: 12
+							},
+							color: '#555'
+						}
+					}
+				}
+			}
+		});
+	});
+</script>
+{% endblock %}

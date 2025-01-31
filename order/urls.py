@@ -11,6 +11,11 @@ urlpatterns = [
     path('e/<int:pk>/', views.edit_order, name='edit_order'),
     path('d/', views.del_orders, name="del_orders"),
 
+    path('import/', views.import_orders, name="import_orders"),
+
+
+    path('statistic/', views.statistic, name="statistic")
+
 
     # path('exp/', views.expenses, name="expenses"),
     # path('exp/list/', views.expense_list, name="expense_list"),

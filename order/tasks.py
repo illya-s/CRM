@@ -1,34 +1,58 @@
 from CRM.celery import app
-from datetime import datetime
 from .models import *
+from django.db.models import Value
+from django.db.models.functions import Replace
 import xml.etree.ElementTree as ET
 
 
 
-# @app.task
-# def get_ttns_status():
-#     orders = Order.objects.all()
-#     ttns = [{ 'ttn': order.ttn, 'id': order.pk } if order.ttn_is_archive else None for order in orders ]
-#     ttns = list(filter(lambda x: x is not None, [ order.ttn if order.ttn_is_archive else None for order in orders ]))
-#     headers = { 'Content-Type': 'application/json', 'Api-Key': config.api_key }
-#     data = {
-#         "modelName": "TrackingDocumentGeneral",
-#         "calledMethod": "getStatusDocuments",
-#         "methodProperties": {
-#             "Documents": [{ "DocumentNumber": ''.join(ttn.split(" ")) } for ttn in ttns]
-#         }
-#     }
-#     response = requests.get(config.np_url, json=data, headers=headers)
-#     if response.status_code == 200:
-#         for el in response.json()['data']:
-#             if el["StatusCode"] == "1":
-#                 st = "Очікування відправки"
-#             elif el["StatusCode"] in ["9", "10", "11"]:
-#                 st = "Отримано"
-#             else:
-#                 st = el["Status"]
-#             { "code": el["StatusCode"], "name": st }
-#     return None
+@app.task
+def get_ttns_status():
+    orders = Order.objects.all().order_by('-id')[:100]
+    ttns = [
+        { 'ttn': ''.join(order.ttn.split(" ")) , 'id': order.pk }
+        for order in orders if not order.ttn_is_archive
+    ]
+
+    headers = { 'Content-Type': 'application/json', 'Api-Key': config.api_key }
+    data = {
+        "modelName": "TrackingDocumentGeneral",
+        "calledMethod": "getStatusDocuments",
+        "methodProperties": {
+            "Documents": [{ "DocumentNumber": ttn_data['ttn'] } for ttn_data in ttns]
+        }
+    }
+
+    response = requests.get(config.np_url, json=data, headers=headers)
+    if response.status_code == 200:
+        for el in response.json()['data']:
+            try:
+                order = Order.objects.annotate(
+                    normalized_field=Replace('ttn', Value(" "), Value(""))
+                ).filter(normalized_field=el["Number"])[0]
+            except:
+                continue
+
+            match el["StatusCode"]:
+                case '1':
+                    st = "Очікування відправки"
+                case '2' | '3':
+                    st = el["Status"]
+                    order.ttn_is_archive = True
+                case "9" | "10" | "11":
+                    st = "Отримано"
+                    order.ttn_is_archive = True
+                case "102" | "103" | "105" | "106" | "111":
+                    st = el["Status"]
+                    order.amount = 0
+                    order.ttn_is_archive = True
+                case _:
+                    st = el["Status"]
+            order.ttn_status_code = el["StatusCode"]
+            order.ttn_status = st
+            order.ttn_address = el["WarehouseRecipient"]
+            order.save()
+    return None
 
 @app.task
 def get_ttn_status(oID:int):
@@ -37,7 +61,7 @@ def get_ttn_status(oID:int):
     except:
         return False
 
-    if not order.ttn:
+    if not order.ttn or order.ttn_is_archive == True:
         return False
 
     headers = { 'Content-Type': 'application/json', 'Api-Key': config.api_key }
@@ -55,17 +79,31 @@ def get_ttn_status(oID:int):
         match el["StatusCode"]:
             case '1':
                 st = "Очікування відправки"
-            case ["9", "10", "11"]:
+            case '2' | '3':
+                st = el["Status"]
+                order.ttn_is_archive = True
+            case "9" | "10" | "11":
                 st = "Отримано"
                 order.ttn_is_archive = True
             case _:
                 st = el["Status"]
+
         order.ttn_status_code = el["StatusCode"]
         order.ttn_status = st
         order.ttn_address = el["WarehouseRecipient"]
         order.save()
         return True
     return False
+
+
+# import csv
+# def load_orders_by_csv(file:str):
+#     with open('file.csv', mode='r', newline='', encoding='utf-8') as file:
+#         reader = csv.reader(file)
+#         for row in reader:
+#             print(row)
+#     durl = f"https://check.checkbox.ua/{data_hash}/pdf?download=true"
+#     pass
 
 
 @app.task

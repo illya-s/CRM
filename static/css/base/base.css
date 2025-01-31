@@ -22,7 +22,7 @@ nav {
 	padding: 1rem;
 
 	display: grid;
-	grid-template-rows: max-content auto max-content;
+	grid-template-rows: max-content max-content auto max-content;
 	gap: 1rem;
 
 	background-color: var(--hd-color);
@@ -140,6 +140,39 @@ main {
 
 	color: var(--d-txt-color);
 	font-size: 1.1em;
+}
+
+
+
+
+.edit-menu-wraper {
+	position: fixed;
+	padding: 5px;
+
+	display: none;
+	flex-direction: column;
+	gap: 5px;
+
+	border-radius: 10px;
+	background-color: var(--bn-color);
+
+	&.active {
+		display: flex;
+	}
+}
+.edit-menu-btn {
+	padding: 5px;
+
+	border-radius: 5px;
+	background-color: transparent;
+
+	color: var(--txt-d-color);
+	text-align: start;
+
+	transition: background-color .2s linear;
+}
+.edit-menu-btn:hover {
+	background-color: #FFFFFF55;
 }
 
 

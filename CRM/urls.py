@@ -7,6 +7,7 @@ urlpatterns = [
     
     path('', include('product.urls')),
     path('o/', include('order.urls')),
+    path('e/', include('expense.urls')),
     path('u/', include('user.urls')),
 
     path('', include('webhook.urls')),

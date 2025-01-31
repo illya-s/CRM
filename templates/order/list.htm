@@ -37,7 +37,7 @@
 		<p class="mobile-hide">{{ order.price }}</p>
 		<p>{{ order.income }}</p>
 
-		<p class="mobile-hide data created">{{ order.created }}</p>
+		<p class="mobile-hide data created">{{ order.date|date:"d.m.Y" }}</p>
 
 		<button class="open-bottom-btn">
 			<svg width="434" height="427" viewBox="0 0 434 427" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,23 +49,24 @@
 
 	<div class="order-bottom">
 		<p></p>
+		<!-- <p>{{ order.inID }}</p> -->
 		<p></p>
 		<div class="order-bottom-product">
 			<p>{{ order.product.article }}</p>
 			<p>{{ order.product.supplier }}</p>
 		</div>
-		<p class="order-bottom-client-check">
-			{% if order.client_check %}
-			<a href="{{ order.client_check.url }}" target="_blank"><img src="{{ order.client_check.url }}" alt=""></a>
-			{% endif %}
-		</p>
+		{% if order.client_check %}
+		<a href="https://check.checkbox.ua/{{ order.client_check }}" target="_blank">{{ order.client_check }}</a>
+		{% else %}
+		<p></p>
+		{% endif %}
 		<p class="order-bottom-address">{{ order.ttn_address }}</p>
-		<p class="mobile-hide"></p>
 		<p class="mobile-hide order-bottom-check">
 			{% if order.bank_check %}
 			<a href="{{ order.bank_check.url }}" target="_blank"><img src="{{ order.bank_check.url }}" alt=""></a>
 			{% endif %}
 		</p>
+		<p class="mobile-hide data created">{{ order.updated }}</p>
 		<a href="{% url 'edit_order' order.id %}" class="edit-order-link">
 			<svg width="330" height="331" viewBox="0 0 330 331" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M331 63.5321C330.387 65.2614 329.533 66.4626 329.201 67.794C327.106 76.2012 323.249 83.744 317.229 89.8865C306.987 100.337 296.388 110.437 286.382 120.25C261.656 95.5159 236.672 70.5247 211.187 45.0313C222.17 34.4258 232.974 21.9845 245.737 12.0634C277.606 -12.7093 323.272 5.87389 330.637 45.8611C331 51.688 331 57.3761 331 63.5321Z" fill="#010101"/>

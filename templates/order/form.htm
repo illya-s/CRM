@@ -42,32 +42,17 @@
 
 
 	<div class="image-wrapper">
-		<div class="file-input-wrapper">
-			<div class="image-upload-wrapper">
-				<!-- {{ form.client_check.name }} -->
-				{{ form.client_check }}
-				<div class="image-preview">
-					<img src="" alt="Image Preview" class="image-preview-img" />
-					<span class="image-preview-placeholder">Выберите чек для клиента</span>
-				</div>
-			</div>
-		</div>
+		{{ form.client_check }}
 	
-		<div class="file-input-wrapper">
-			<div class="image-upload-wrapper">
-				{{ form.bank_check }}
-				<div class="image-preview">
-					<img src="" alt="Image Preview" class="image-preview-img" />
-					<span class="image-preview-placeholder">Выберите чек</span>
-				</div>
-			</div>
-		</div>
+		{{ form.bank_check }}
 	</div>
 
 	<div class="form-ttn-wraper">
 		{{ form.ttn }}
 		{{ form.payment }}
 	</div>
+
+	{{ form.date }}
 
 	<button type="submit">Соханить</button>
 </form>
