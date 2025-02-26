@@ -12,8 +12,6 @@ class Supplier(models.Model):
 
     import_url = models.URLField(blank=True, null=True)
 
-    auto_import = models.BooleanField(default=False, blank=True, null=True)
-
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
 
@@ -63,8 +61,20 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Цена")
     image = models.URLField(blank=True, null=True)
 
+    url   = models.URLField(null=True, blank=True, verbose_name="Ссылка на товар")
+
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
+
+
+class ProductAvailability(models.Model):
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, null=True, related_name='products_availability')
+
+class ProductAvailabilityAmount(models.Model):
+    spa = models.ForeignKey(ProductAvailability, on_delete=models.CASCADE, null=True, related_name='products_amount')
+
+    size   = models.CharField(max_length=500, blank=False, null=True, verbose_name="Размер")
+    amount = models.PositiveIntegerField(null=True, blank=False, verbose_name="Количество")

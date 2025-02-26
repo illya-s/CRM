@@ -4,6 +4,7 @@ db.sqlite3
 *.log
 .env
 venv
+venv/
 test.py
 config.py
 crm.sock

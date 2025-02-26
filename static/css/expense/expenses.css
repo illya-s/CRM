@@ -1,18 +1,26 @@
 main {
-	padding: 20px;
+	padding: 0;
+
+	display: grid;
+	grid-template-columns: auto max-content;
+	/* grid-template-rows: max-content max-content auto max-content; */
+}
+
+
+.contenet {
+	padding: 1rem;
 
 	display: grid;
 	grid-template-rows: max-content auto max-content;
 	gap: 1rem;
 }
 
-
 .top-menu {
-	padding: 10px;
+	padding: 5px;
 
 	display: grid;
-	grid-template-columns: auto max-content max-content;
-	gap: 1rem;
+	grid-template-columns: auto max-content 30px;
+	gap: .5rem;
 	align-items: center;
 
 	border-radius: 10px;
@@ -25,12 +33,13 @@ main {
 }
 
 
-.top-menu-select, .add-order-btn {
+.top-menu-select, .top-add-btn {
 	border: none;
 	background-color: var(--bn-color);
 
 	color: var(--txt-bn-color);
 }
+
 .top-menu-select {
 	height: 100%;
 	padding: 5px 10px;
@@ -38,7 +47,7 @@ main {
 	border-radius: 10px;
 
 	font-size: 1em;
-	font-weight: bold;
+	font-weight: normal;
 }
 .top-add-btn {
 	width: 30px;
@@ -49,8 +58,102 @@ main {
 	place-content: center;
 	aspect-ratio: 1;
 
-	border-radius: 50%;
+	border-radius: 10px;
+
+	opacity: 1;
+	transition: opacity .2s linear;
+	cursor: pointer;
+
+	&:hover {
+		opacity: .6;
+	}
 }
 .top-add-btn > svg {
 	width: 100%; height: auto;
+}
+
+
+.sidebar {
+	padding: 1rem;
+
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	background-color: var(--hd-color);
+}
+
+.exp-cat-links {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+.exp-cat-link {
+	padding: 5px 10px;
+
+	display: grid;
+	grid-template-columns: auto 20px 20px;
+	grid-template-rows: 20px;
+	align-items: center;
+	gap: .5rem;
+
+	border: solid 2px var(--bn-color);
+	border-radius: 10px;
+	background-color: transparent;
+
+	transition: background-color .2s linear;
+
+	&:hover {
+		background-color: var(--bn-color);
+	}
+	&:hover > .exp-cat-link-upd, &:hover > .exp-cat-link-del {
+		opacity: 1;
+	}
+}
+.exp-cat-link > a {
+	color: var(--txt-bn-color);
+	text-decoration: none;
+	font-size: 1rem;
+}
+.exp-cat-link-upd, .exp-cat-link-del {
+	width: 20px;
+
+	display: grid;
+	place-content: center;
+	aspect-ratio: 1;
+
+	border: none;
+	border-radius: 50%;
+	outline-color: #FFFFFF55;
+	background-color: transparent;
+
+	opacity: 0;
+	transition: all .2s linear;
+
+	&:hover {
+		background-color: #FFFFFF55;
+		outline: solid 4px #FFFFFF55;
+	}
+}
+
+.sidebar-add-btn {
+	padding: 5px 10px;
+
+	display: grid;
+	grid-template-columns: auto 25px;
+	align-items: center;
+
+	border-radius: 10px;
+	background-color: var(--bn-color);
+
+	text-decoration: none;
+	color: var(--txt-bn-color);
+
+	opacity: 1;
+	transition: opacity .2s linear;
+	cursor: pointer;
+
+	&:hover {
+		opacity: .6;
+	}
 }

@@ -6,51 +6,57 @@
 {% endblock %}
 
 {% block content %}
-<section class="profile-info-wrapper">
-	<div class="profile-info-top">
-		<h2>Ваш профиль</h2>
-	</div>
-	<div class="profile-info">
-		<p>Имя пользователя: <span>{{ user.username }}</span></p>
-		<p>Имя: <span>{{ user.first_name|default:"Нет" }}</span></p>
-		<p>Фамилия: <span>{{ user.last_name|default:"Нет" }}</span></p>
-		<p>Электронная почта: <span>{{ user.email|default:"Нет" }}</span></p>
-	</div>
-
-	<ul>
-		{% for group in user.groups.all %}
-			<li>{{ group.name }}</li>
-		{% endfor %}
-	</ul>
+<section class="profile-info-top">
+	<h2>Ваш профиль</h2>
 </section>
 
-{% if users %}
-<section class="user-list-wrapper">
-	<div class="user-list-top">
-		<h2>Пользователи</h2>
-		<a href="{% url 'register' %}" class="add-user-link">
-			<svg width="515" height="516" viewBox="0 0 515 516" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect x="212" y="0.5" width="75" height="515" rx="37.5" fill="#FFF"/>
-				<rect y="287.5" width="75" height="515" rx="37.5" transform="rotate(-90 0 287.5)" fill="#FFF"/>
-			</svg>
-		</a>
-	</div>
-	<div class="user-list">
-		<div class="user-top">
-			<p>Имя пользователя</p>
-			<p>email</p>
-			<p>Статус</p>
+
+<section class="left">
+	{% if users %}
+	<section class="user-list-wrapper">
+		<div class="user-list-top">
+			<h2>Пользователи</h2>
+			<a href="{% url 'register' %}" class="add-user-link">
+				<svg width="515" height="516" viewBox="0 0 515 516" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect x="212" y="0.5" width="75" height="515" rx="37.5" fill="#FFF"/>
+					<rect y="287.5" width="75" height="515" rx="37.5" transform="rotate(-90 0 287.5)" fill="#FFF"/>
+				</svg>
+			</a>
 		</div>
-		{% for user in users %}
-		<div class="user">
-			<p>{{ user.username }}</p>
-			<p>{{ user.email|default:"None" }}</p>
-			<p>{% if user.is_staff %}Администратор{% else %}Пользователь{% endif %}</p>
+		<div class="user-list">
+			<div class="user-top">
+				<p>Имя пользователя</p>
+				<p>email</p>
+				<p>Статус</p>
+			</div>
+			{% for user in users %}
+			<div class="user">
+				<p>{{ user.username }}</p>
+				<p>{{ user.email|default:"None" }}</p>
+				<p>{% if user.is_staff %}Администратор{% else %}Пользователь{% endif %}</p>
+			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
-	</div>
+	</section>
+	{% endif %}
 </section>
-{% endif %}
+<section class="right">
+	<section class="profile-info-wrapper">
+		<div class="profile-info">
+			<p>Имя пользователя: <span>{{ user.username }}</span></p>
+			<p>Имя: <span>{{ user.first_name|default:"Нет" }}</span></p>
+			<p>Фамилия: <span>{{ user.last_name|default:"Нет" }}</span></p>
+			<p>Электронная почта: <span>{{ user.email|default:"Нет" }}</span></p>
+		</div>
+	
+		<ul>
+			{% for group in user.groups.all %}
+				<li>{{ group.name }}</li>
+			{% endfor %}
+		</ul>
+	</section>
+</section>
+
 
 <menu class="custom-menu" id="custom-menu">
 	<div class="custom-menu-btns">

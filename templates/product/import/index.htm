@@ -7,7 +7,7 @@
 
 <meta name="page" content="{{ page }}">
 <meta name="editImport" content="{% url 'edit_supplier_auto_import' %}">
-<meta name="delSupplierUrl" content="{% url 'del_supplier' %}">
+<meta name="delSupplier" content="{% url 'del_supplier' %}">
 {% endblock %}
 
 {% block content %}
@@ -24,14 +24,6 @@
 
 	<div class="list-cont" data-url="{% url 'sup_list' %}"></div>
 </section>
-
-
-<menu class="custom-menu" id="custom-menu">
-	<div class="custom-menu-btns">
-		<button class="custom-menu-btn" id="customMenuUpdBtn">Редактировать</button>
-		<button class="custom-menu-btn" id="customMenuDelBtn">Удалить</button>
-	</div>
-</menu>
 {% endblock %}
 
 {% block script %}

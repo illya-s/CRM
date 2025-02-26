@@ -65,6 +65,15 @@ def orders(request):
 #     return ststus
 
 
+np_ttn_url = "https://novaposhta.ua/tracking/?cargo_number=" # 20 0200 0035 8250
+olx_ttn_url = "https://track.ukrposhta.ua/tracking_UA.html?barcode=" # 73 0200 0035 825
+
+def get_clear_ttn(ttn:str):
+    return ''.join(str(ttn).split(' '))
+def is_np_ttn(ttn:str):
+    return True if len(get_clear_ttn(ttn)) == 14 else False
+
+
 def order_list(request):
     if request.method == "GET":
         spp = request.GET.get('epp') if request.GET.get('epp') else 25
@@ -74,7 +83,9 @@ def order_list(request):
             {
                 **model_to_dict(order),
                 "product": model_to_dict(order.product) if order.product else None,
-                "ttnLink": f"https://novaposhta.ua/tracking/?cargo_number={''.join(str(order.ttn).split(' '))}",
+                "ttnLink": (
+                    f"{np_ttn_url}{get_clear_ttn(order.ttn)}" if is_np_ttn(order.ttn) else f"{olx_ttn_url}{get_clear_ttn(order.ttn)}"
+                ),
                 "payment": order.get_payment_display(),
                 "updated": order.updated.strftime("%d.%m.%y") if order.updated else None,
                 "income": order.income()

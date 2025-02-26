@@ -11,7 +11,7 @@ class ExpenseCategory(models.Model):
         return self.name
 
 class Expense(models.Model):
-    expense = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, null=True, verbose_name="Категория")
+    expense = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, related_name='category_expenses', null=True, verbose_name="Категория")
 
     description = models.CharField(max_length=1000, null=True, blank=True, verbose_name="Описание")
 

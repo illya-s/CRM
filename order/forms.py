@@ -14,7 +14,7 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ["inID", "product", "price", "amount", "client_name", "client_surname", "client_patronymic", "client_phone", "client_check", "ttn", "payment", "bank_check", "date"]
+        fields = ["inID", "product", "price", "check_amount", "amount", "client_name", "client_surname", "client_patronymic", "client_phone", "client_check", "return_check", "ttn", "payment", "bank_check", "date"]
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
         }

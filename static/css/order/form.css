@@ -172,13 +172,17 @@ form {
 	display: grid;
 	gap: .5rem;
 }
-.form-price-wraper, .form-product-wraper, .image-wrapper,
+.form-product-wraper, .image-wrapper,
 .form-product-wraper {
 	grid-template-columns: 1fr 1fr;
 }
 .form-price-wraper {
-	grid-template-columns: .25fr 2fr 2fr;
+	grid-template-columns: 1fr 2fr 2fr .5fr;
 }
+.form-price-wraper * {
+	min-width: 0;
+}
+
 .form-client-full-name-wraper {
 	grid-template-columns: 1fr 1fr 1fr;
 }

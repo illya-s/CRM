@@ -113,7 +113,7 @@ main {
 	gap: 1rem;
 
 	border-radius: 10px;
-	background-color: var(--bl-color);
+	background-color: var(--bl-d-color);
 }
 .confirm-popup-wraper.active .confirm-wraper {
 	left: 50%;

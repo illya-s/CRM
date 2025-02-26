@@ -1,54 +1,54 @@
 $(document).ready(function () {
-	var currentContMenu;
+	$(document).on('click', '.expense-del', async function (e) {
+		let parent = $(this).parent();
+		let name = parent.parent().siblings('.expense-description').text();
+		let isTrue = await confirmation(`Ви дійсно бажаєте видалити категорию "${name}"?`)
 
-	$(document).on('contextmenu', ".expense-block", function(e) {
-		e.preventDefault();
-
-		currentContMenu = $(this).data('id');
-
-		var menuWidth = $('#custom-menu').outerWidth();
-		var menuHeight = $('#custom-menu').outerHeight();
-		
-		var windowWidth = $(window).width();
-		var windowHeight = $(window).height();
-		
-		var mouseX = e.pageX;
-		var mouseY = e.pageY;
-		
-		if (mouseX + menuWidth > windowWidth) {
-			mouseX = windowWidth - menuWidth;
+		if (isTrue) {
+			$.ajax({
+				type: "POST",
+				url: $('meta[name="delExpense"]').attr('content'),
+				data: {'eID': parent.data('id')},
+				success: function (response) {
+					load_list()
+				}
+			});
 		}
-		
-		if (mouseY + menuHeight > windowHeight) {
-			mouseY = windowHeight - menuHeight;
-		}
-
-
-		$('.edit-menu-wraper').css({
-			top: mouseY + "px",
-			left: mouseX + "px",
-		}).addClass('active');
-	});
-	$(document).on('click', function(e) {
-		if (!$(e.target).closest('.edit-menu-wraper').length) {
-			$('.edit-menu-wraper').removeClass('active');
-		}
-	});
-
-
-	$('.upd-menu-btn').on('click', function (e) {
-		window.location.href = `${window.location.origin}${$('meta[name="updExpense"]').attr('content')}?eID=${currentContMenu}`
-		$('.edit-menu-wraper').removeClass('active');
 	})
-	$('.del-menu-btn').on('click', function (e) {
+
+	$(document).on('click', ".exp-cat-link", function (e) {
+		if (!$(e.target).closest('.exp-cat-link-del').length) {
+			let link = $(this).find('a').get(0);
+			if (link) link.click();
+		}
+	})
+
+
+	function load_cats() {
 		$.ajax({
-			type: "POST",
-			url: $('meta[name="delExpense"]').attr('content'),
-			data: {'eID': currentContMenu},
+			type: "GET",
+			url: $('.exp-cat-links').data('url'),
 			success: function (response) {
-				load_list()
+				$('.exp-cat-links').html(response.list)
 			}
 		});
-		$('.edit-menu-wraper').removeClass('active');
+	}
+	load_cats()
+
+
+	$(document).on('click', '.exp-cat-link-del', async function (e) {
+		let parent = $(this).parent();
+		let name = $(this).siblings('a').text();
+		let isTrue = await confirmation(`Ви дійсно бажаєте видалити категорию "${name}"?`)
+		if (isTrue) {
+			$.ajax({
+				type: "POST",
+				url: $('meta[name="delExpenseCat"]').attr('content'),
+				data: {'cID': parent.data('id')},
+				success: function (response) {
+					load_cats()
+				}
+			});
+		}
 	})
 });

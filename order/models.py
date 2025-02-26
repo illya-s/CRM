@@ -38,6 +38,12 @@ def get_ttn_address(ttn:str):
 
     return response.json()['data'][0]["WarehouseRecipientAddress"] if response.status_code == 200 else None
 
+class OrderPlatform(models.Model):
+    name = models.CharField(max_length=500, blank=False, null=True, verbose_name="Название")
+
+    def __str__(self):
+        return self.name
+
 
 class Order(models.Model):
     # WHOSE = {
@@ -53,6 +59,7 @@ class Order(models.Model):
 
     product           = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='order')
 
+    check_amount      = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Сумма чека")
     price             = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="РЦ")
     amount            = models.IntegerField(null=True, blank=False, verbose_name="Количество")
 
@@ -60,13 +67,17 @@ class Order(models.Model):
     client_surname    = models.CharField(max_length=200, verbose_name="Введыть Прізвище", null=True)
     client_patronymic = models.CharField(max_length=200, verbose_name="Введыть по-батькові", null=True, blank=True)
     client_phone      = models.CharField(max_length=50,  verbose_name="Телефон", null=True)
+
     client_check      = models.CharField(max_length=200, verbose_name="Чек клиента", null=True, blank=True)
+    return_check      = models.CharField(max_length=200, verbose_name="Чек возврата", null=True, blank=True)
 
     ttn               = models.CharField(verbose_name="TTN", max_length=100, null=True, blank=True)
     ttn_status_code   = models.IntegerField(null=True, blank=True)
     ttn_status        = models.CharField(max_length=500,   null=True, blank=True)
     ttn_address       = models.CharField(max_length=1000,  null=True, blank=True)
     ttn_is_archive    = models.BooleanField(default=False, null=True)
+
+    # platform          = models.ForeignKey(OrderPlatform, on_delete=models.SET_NULL, null=True, blank=True, related_name='order_platform')
 
     payment           = models.CharField(verbose_name="Оплата", max_length=5, choices=PAYMENTS, default="S", blank=True)
     bank_check        = models.ImageField(verbose_name="Чек банка", upload_to=upload_to, null=True, blank=True)

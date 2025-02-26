@@ -1,0 +1,73 @@
+{% extends "base/base.htm" %}
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/product/availability.css' %}">
+
+<meta name="page" content="{{ page }}">
+{% endblock %}
+
+{% block content %}
+<section class="content-wrapper">
+	<div class="top-menu">
+		<h1>{{ page_name }}</h1>
+		<a href="{% url 'add_supplier' %}" class="add-supplier-btn top-menu-add-btn" id="addSupplierBtn">
+			<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<rect x="14" width="5" height="34" rx="2.5" fill="#FFFFFF"/>
+				<rect y="19" width="5" height="34" rx="2.5" transform="rotate(-90 0 19)" fill="#FFFFFF"/>
+			</svg>
+		</a>
+	</div>
+
+	<div class="list-cont">
+		<p>ID</p>
+		<p>Название</p>
+		<p class="t-center">36</p>
+		<p class="t-center">37</p>
+		<p class="t-center">38</p>
+		<p class="t-center">39</p>
+		<p class="t-center">40</p>
+		<p class="t-center">41</p>
+		<p class="t-center">42</p>
+		<p class="t-center">43</p>
+		<p class="t-center">44</p>
+		<p class="t-center">45</p>
+		<p class="t-center">46</p>
+		<p class="t-center">47</p>
+		<p class="t-center">48</p>
+		<p class="t-center">49</p>
+		<!-- <p>50</p> -->
+		{% for product in products %}
+		<p>{{ product.id }}</p>
+		<p>{{ product.name }}</p>
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		<input type="number" value="36">
+		{% endfor %}
+	</div>
+</section>
+
+
+<menu class="custom-menu" id="custom-menu">
+	<div class="custom-menu-btns">
+		<button class="custom-menu-btn" id="customMenuUpdBtn">Редактировать</button>
+		<button class="custom-menu-btn" id="customMenuDelBtn">Удалить</button>
+	</div>
+</menu>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/add_csrftoken.js' %}"></script>
+{% endblock %}

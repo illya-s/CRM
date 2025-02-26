@@ -24,12 +24,13 @@
 <form method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 
-
 	{{ form.product }}
 
 	<div class="form-price-wraper">
 		{{ form.inID }}
+
 		{{ form.price }}
+		{{ form.check_amount }}
 		{{ form.amount }}
 	</div>
 	
@@ -43,6 +44,7 @@
 
 	<div class="image-wrapper">
 		{{ form.client_check }}
+		<!-- {{ form.return_check }} -->
 	
 		{{ form.bank_check }}
 	</div>

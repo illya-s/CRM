@@ -139,6 +139,19 @@ def load_supplier_products(request, sID):
         return Http404
 
 
+def sup_availability(request, pk):
+    supplier = get_object_or_404(Supplier, id=pk)
+    products = supplier.supplier_products.all() #.products_availability.all()
+    # products_amount = products.products_amount.all()
+
+    data = {
+        'page_name': f'Наличие обувь - {supplier.name}',
+        "products": products,
+    }
+    
+    return render(request, 'product/availability/availability.htm', data)
+
+
 @auth.login_required(redirect_url='login')
 def add_product(request):
     if request.method == "GET":
