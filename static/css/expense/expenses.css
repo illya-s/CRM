@@ -13,18 +13,26 @@ main {
 	display: grid;
 	grid-template-rows: max-content auto max-content;
 	gap: 1rem;
+
+	overflow-y: auto;
 }
 
 .top-menu {
 	padding: 5px;
 
 	display: grid;
-	grid-template-columns: auto max-content 30px;
+	grid-template-columns: auto max-content max-content 30px;
 	gap: .5rem;
 	align-items: center;
 
 	border-radius: 10px;
 	background-color: var(--bl-d-color);
+}
+
+.top-menu-ym-selection {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: .5rem;
 }
 
 .top-menu > p {
@@ -33,14 +41,14 @@ main {
 }
 
 
-.top-menu-select, .top-add-btn {
+.top-menu-select, .top-add-btn, .year-select, .month-select, .day-select {
 	border: none;
 	background-color: var(--bn-color);
 
 	color: var(--txt-bn-color);
 }
 
-.top-menu-select {
+.top-menu-select, .year-select, .month-select, .day-select {
 	height: 100%;
 	padding: 5px 10px;
 

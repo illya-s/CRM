@@ -10,6 +10,7 @@ from .models import *
 from .forms import *
 # from .tasks import *
 
+import datetime
 from datetime import timedelta
 from django.utils import timezone
 
@@ -69,11 +70,24 @@ def del_expense_cat(request):
 
 
 def expense_list(request):
+    now = datetime.datetime.now()
+
     if request.method != "GET":
         return Http404
+
+    # expense per page
     spp = request.GET.get('epp') if request.GET.get('epp') else 25
+
+    # page number
     page = int(request.GET.get('page')) if request.GET.get('page') else 1
+
+    # filter
     f = request.GET.get('filter')
+
+    ymd = request.GET.get('ymd')
+
+    # year month
+    y, m, d = tuple(str(ymd).split(',')) if ymd and ymd != "undefined" else (now.year, "-1", "-1")
 
     if f != "-1":
         eCat = get_object_or_404(ExpenseCategory, id=f)
@@ -81,10 +95,27 @@ def expense_list(request):
     else:
         objs = Expense.objects.all()
 
+    objs = objs.filter(date__year=y)
+
+    unique_years  = objs.values('date__year').distinct()
+    years_list = [el['date__year'] for el in unique_years]
+
+    unique_months = objs.values('date__month').distinct()
+    month_list = [el['date__month'] for el in unique_months]
+
+    if m != '-1':
+        objs = objs.filter(date__month=m)
+
+    unique_days   = objs.values('date__day').distinct()
+    day_list   = [el['date__day'] for el in unique_days][::-1]
+
+    if d != '-1':
+        objs = objs.filter(date__day=d)
+
     expenses_obj = [
         {
             **model_to_dict(order),
-            'expense': order.expense.name
+            'category': order.category.name
         }
         for order in objs.order_by("-date")
     ]
@@ -99,21 +130,27 @@ def expense_list(request):
 
     data = {
         "expenses": expenses,
+        'yl': years_list,
+        'ml': month_list,
+        'dl': day_list,
+        'cy': y, 'cm': m, 'cd': d
     }
 
     data_html = {
         'list': render_to_string('expense/list.htm', data),
-        'pagi': render_to_string('pagination.html', { "page": expenses }),
     }
     return JsonResponse(data_html)
 
 @auth.is_staff_required(redirect_url='expenses')
 def add_expense(request):
+    if 'HTTP_REFERER' in request.META:
+        request.session['previous_url'] = request.META['HTTP_REFERER']
+    
     if request.method == 'POST':
         form = ExpenseForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('expenses')
+            return redirect(request.META.get('HTTP_REFERER', '/'))
         return JsonResponse({ 'message': form.errors }, status=400)
     else:
         form = ExpenseForm()
@@ -127,7 +164,7 @@ def upd_expense(request, pk):
         form = ExpenseForm(request.POST, request.FILES, instance=expense)
         if form.is_valid():
             form.save()
-            return redirect('expenses')
+            return redirect(request.META.get('HTTP_REFERER', '/'))
     else:
         form = ExpenseForm(instance=expense)
         context = { 'form': form, 'page': "edit_expense", 'page_name': 'Редактировать расход' }

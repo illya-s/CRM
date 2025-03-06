@@ -46,7 +46,7 @@
 .list-cont {
 	display: flex;
 	flex-direction: column;
-	gap: .25rem;
+	gap: .5rem;
 }
 .list-cont * {
 	font-size: 1em;
@@ -61,8 +61,8 @@
 	padding: 5px;
 
 	display: grid;
-	grid-template-columns: 20px .75fr 3fr max-content;
-	grid-template-rows: 20px;
+	grid-template-columns: 30px .75fr 3fr max-content;
+	grid-template-rows: 30px;
 
 	align-items: center;
 	gap: 1rem;
@@ -90,8 +90,7 @@
 	aspect-ratio: 1;
 }
 .supplier-logo > svg {
-	width: 100%;
-	height: 100%;
+	width: 100%; height: 100%;
 }
 
 .sup-url {

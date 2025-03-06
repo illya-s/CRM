@@ -12,6 +12,7 @@ click-repl==0.3.0
 colorama==0.4.6
 coloredlogs==15.0.1
 cron-descriptor==1.4.5
+crontab==1.0.1
 Django==5.1.4
 django-celery-beat==2.7.0
 django-timezone-field==7.0

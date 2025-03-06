@@ -1,5 +1,5 @@
 main {
-	padding: 20px;
+	padding: 1rem;
 
 	display: grid;
 	grid-template-rows: max-content auto max-content;
@@ -8,18 +8,20 @@ main {
 
 
 .top-menu {
-	padding: 10px;
+	padding: 5px;
 
 	display: grid;
-	grid-template-columns: auto max-content max-content;
-	gap: 1rem;
-	align-items: center;
+	grid-template-columns: auto max-content 30px;
+	grid-template-rows: 30px;
+	gap: .5rem;
 
 	border-radius: 10px;
 	background-color: var(--bl-d-color);
 }
 
 .top-menu > p {
+	align-self: center;
+
 	color: var(--txt-l-color);
 	font-size: 1.2em;
 }
@@ -27,29 +29,23 @@ main {
 
 .top-menu-select, .add-order-btn {
 	border: none;
+	border-radius: 10px;
 	background-color: var(--bn-color);
 
 	color: var(--txt-bn-color);
 }
 .top-menu-select {
-	height: 100%;
 	padding: 5px 10px;
 
-	border-radius: 10px;
-
 	font-size: 1em;
-	font-weight: bold;
+	font-weight: normal;
 }
 .top-add-btn {
-	width: 30px;
-	height: 30px;
 	padding: 3px;
 
 	display: grid;
 	place-content: center;
 	aspect-ratio: 1;
-
-	border-radius: 50%;
 }
 .top-add-btn > svg {
 	width: 100%; height: auto;

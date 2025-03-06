@@ -1,28 +1,38 @@
 $(document).ready(function () {
 	const LIST = $(".list-cont");
-	const PEGI = $("#pagination");
+	// const PEGI = $("#pagination");
 	const URL = LIST.data("url");
 
-	const EPP = $("#EPP");
 
-	const pageName = $('meta[name="page"]').attr('content')
+	let params = new URLSearchParams(window.location.search);
 
-	const EPPN = `${pageName}epp`
-	if (!localStorage.getItem(EPPN)) {
-		localStorage.setItem(EPPN, 25);
-	} else {
-		EPP.val(localStorage.getItem(EPPN)).change()
+	if (!params.get("p")) {
+		params.set("p", "1");
+		window.history.replaceState(null, null, "?" + params.toString() + window.location.hash);
 	}
-	EPP.change(function (e) {
-		localStorage.setItem(EPPN, $(this).val());
+	if (!params.get("epp")) {
+		params.set("epp", "25");
+		window.history.replaceState(null, null, "?" + params.toString() + window.location.hash);
+	}
+
+	$(document).on('change', "#EPP", function (e) {
+		params.set("epp", $(this).val());
+		window.history.replaceState(null, null, "?" + params.toString() + window.location.hash);
 		load_list();
 	});
 
+	const pageName = 'expenses';
 
-	const EPNN = `${pageName}epn`
-	if (!localStorage.getItem(EPNN)) {
-		localStorage.setItem(EPNN, 1);
+	const EPPN = `${pageName}epp`
+	if (localStorage.getItem(EPPN)) {
+		localStorage.removeItem(EPPN)
 	}
+	const EPNN = `${pageName}epn`
+	if (localStorage.getItem(EPNN)) {
+		localStorage.removeItem(EPNN)
+	}
+
+	console.log(pageName, EPPN, EPNN)
 
 	function hash() {
 		return window.location.hash.split("#")[1]
@@ -33,27 +43,16 @@ $(document).ready(function () {
 	}
 
 	window.load_list = function() {
-		if (pageName == "products") {
-			$(".pre-product-list").show();
-			LIST.hide();
-		}
-
+		var y = $("#yearSelect").val()
+		var m = $("#monthSelect").val()
+		var d = $("#daySelect").val()
 		$.ajax({
 			type: "GET",
 			url: URL,
-			data: { 'page': localStorage.getItem(EPNN), 'epp': localStorage.getItem(EPPN), 'filter': hash(), },
+			data: { 'page': params.get("p"), 'epp': params.get("epp"), 'filter': hash(), 'ymd': y && m ? `${y},${m},${d}`: undefined },
 			success: function (response) {
 				LIST.html(response.list);
-				PEGI.html(response.pagi);
-
-				if (pageName == "products") {
-					var img = $('.product-img')
-
-					img[parseInt(img.length) - 1].onload = () => {
-						LIST.show();
-						$(".pre-product-list").hide();
-					};
-				}
+				$("#EPP").val($("#EPP").data('epp'))
 			},
 			error: function (error) {
 				alert(`Error: ${error}`)
@@ -66,8 +65,13 @@ $(document).ready(function () {
 		load_list()
 	});
 
+	$(document).on('change', '#yearSelect, #monthSelect, #daySelect', function (e) {
+		load_list()
+	})
+
 	$(document).on('click', '.page-link', function () {
-		localStorage.setItem(EPNN, $(this).data("page"));
+		params.set("p", $(this).data("page"));
+		window.history.replaceState(null, null, "?" + params.toString() + window.location.hash);
 		load_list()
 	});
 });

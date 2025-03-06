@@ -1,4 +1,5 @@
 from django.db import models
+from product.models import *
 
 # Create your models here.
 class ExpenseCategory(models.Model):
@@ -11,7 +12,9 @@ class ExpenseCategory(models.Model):
         return self.name
 
 class Expense(models.Model):
-    expense = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, related_name='category_expenses', null=True, verbose_name="Категория")
+    category = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, related_name='category_expenses', null=True, verbose_name="Категория")
+
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='category_products', verbose_name="Товар")
 
     description = models.CharField(max_length=1000, null=True, blank=True, verbose_name="Описание")
 

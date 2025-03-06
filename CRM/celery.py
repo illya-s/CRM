@@ -1,5 +1,8 @@
 from __future__ import absolute_import, unicode_literals
 import os
+
+import CRM.tasks
+
 from celery import Celery
 from celery.schedules import crontab
 
@@ -18,12 +21,16 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    # 'get_sup_products_every_hour_minutes': {
+    # 'daily_get_sup_products': {
     #     'task': 'product.tasks.fetch_suppliers_data',
     #     'schedule': crontab(minute=0) # , hour='*/1'
     # },
     'load_orders_ttn_data': {
         'task': 'order.tasks.get_ttns_status',
         'schedule': crontab(minute=0)
-    }
+    },
+    "daily_backup": {
+        "task": "tasks.backup_db",
+        "schedule": crontab(hour=0, minute=0),
+    },
 }

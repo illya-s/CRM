@@ -2,13 +2,18 @@ from CRM.celery import app
 from .models import *
 from django.db.models import Value
 from django.db.models.functions import Replace
-import xml.etree.ElementTree as ET
+# import xml.etree.ElementTree as ET
+import logging
 
-
+logger = logging.getLogger(__name__)
 
 @app.task
 def get_ttns_status():
     orders = Order.objects.all().order_by('-id')[:100]
+    if not orders:
+        logger.info("Skipped: No orders!")
+        return
+
     ttns = [
         { 'ttn': ''.join(order.ttn.split(" ")) , 'id': order.pk }
         for order in orders if not order.ttn_is_archive

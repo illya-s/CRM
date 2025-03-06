@@ -77,7 +77,7 @@ class Order(models.Model):
     ttn_address       = models.CharField(max_length=1000,  null=True, blank=True)
     ttn_is_archive    = models.BooleanField(default=False, null=True)
 
-    # platform          = models.ForeignKey(OrderPlatform, on_delete=models.SET_NULL, null=True, blank=True, related_name='order_platform')
+    platform          = models.ForeignKey(OrderPlatform, on_delete=models.SET_NULL, null=True, blank=True, related_name='order_platform')
 
     payment           = models.CharField(verbose_name="Оплата", max_length=5, choices=PAYMENTS, default="S", blank=True)
     bank_check        = models.ImageField(verbose_name="Чек банка", upload_to=upload_to, null=True, blank=True)

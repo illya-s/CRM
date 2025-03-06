@@ -17,24 +17,7 @@
 
 {% block content %}
 
-<section class="contenet">
-	<div class="top-menu">
-		<p>Затраты</p>
-		<select class="top-menu-select" name="" id="EPP">
-			<option value="25">25</option>
-			<option value="50">50</option>
-			<option value="100">100</option>
-		</select>
-		<a href="{% url 'add_expense' %}" class="top-add-btn add-order-btn" id="addOrderBtn">
-			<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect x="14" width="5" height="34" rx="2.5" fill="#FFF"/>
-				<rect y="19" width="5" height="34" rx="2.5" transform="rotate(-90 0 19)" fill="#FFF"/>
-			</svg>
-		</a>
-	</div>
-	<div class="expense-list list-cont" data-url="{% url 'expense_list' %}"></div>
-	<div class="pagination" id="pagination"></div>
-</section>
+<section class="contenet list-cont" data-url="{% url 'expense_list' %}"></section>
 
 <section class="sidebar">
 	<div class="exp-cat-links" data-url="{% url 'cat_list' %}"></div>
