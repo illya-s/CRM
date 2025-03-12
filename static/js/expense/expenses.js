@@ -23,6 +23,13 @@ $(document).ready(function () {
 		}
 	})
 
+	$(document).on('click', ".exp-plat-link", function (e) {
+		if (!$(e.target).closest('.exp-plat-link-del').length) {
+			let link = $(this).find('a').get(0);
+			if (link) link.click();
+		}
+	})
+
 
 	function load_cats() {
 		$.ajax({
@@ -58,6 +65,23 @@ $(document).ready(function () {
 				data: {'cID': parent.data('id')},
 				success: function (response) {
 					load_cats()
+				}
+			});
+		}
+	})
+
+	$(document).on('click', '.exp-plat-link-del', async function (e) {
+		let parent = $(this).parent();
+		console.log(parent.siblings('a').text())
+		let name = $(this).siblings('a').text();
+		let isTrue = await confirmation(`Ви дійсно бажаєте видалити платформу "${name}"?`)
+		if (isTrue) {
+			$.ajax({
+				type: "POST",
+				url: $('meta[name="delExpensePlat"]').attr('content'),
+				data: {'cID': parent.data('id')},
+				success: function (response) {
+					load_plats()
 				}
 			});
 		}

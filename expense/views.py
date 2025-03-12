@@ -90,7 +90,7 @@ def add_expense_plat(request):
         return render(request, 'expense/form.htm', context)
 @auth.is_staff_required(redirect_url='expenses')
 def upd_expense_plat(request, pk):
-    expense_cat = get_object_or_404(ExpenseCategory, pk=pk)
+    expense_cat = get_object_or_404(ExpensePlatform, pk=pk)
 
     if request.method == 'POST':
         form = ExpensePlatformForm(request.POST, request.FILES, instance=expense_cat)
@@ -105,8 +105,8 @@ def upd_expense_plat(request, pk):
 @auth.is_staff_required(redirect_url='expenses')
 def del_expense_plat(request):
     if request.method == 'POST':
-        expense_cat = get_object_or_404(ExpenseCategory, pk=request.POST.get('cID'))
-        expense_cat.delete()
+        e = get_object_or_404(ExpensePlatform, pk=request.POST.get('cID'))
+        e.delete()
 
         return JsonResponse({ 'message': 'sucses' }, status=200)
     else:
