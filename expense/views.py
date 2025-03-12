@@ -163,9 +163,9 @@ def expense_list(request):
             'product': {
                 'id': expense.product.pk,
                 'name': expense.product.name
-            } if expense.product else None,
-            'category': expense.category.name if expense.category else None,
-            'platform': expense.platform.name if expense.platform else None
+            } if expense.product else "Не обрано",
+            'category': expense.category.name if expense.category else "Не обрано",
+            'platform': expense.platform.name if expense.platform else "Не обрано"
         }
         for expense in objs.order_by("-date")
     ]
