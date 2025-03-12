@@ -35,6 +35,17 @@ $(document).ready(function () {
 	}
 	load_cats()
 
+	function load_plats() {
+		$.ajax({
+			type: "GET",
+			url: $('.exp-plat-links').data('url'),
+			success: function (response) {
+				$('.exp-plat-links').html(response.list)
+			}
+		});
+	}
+	load_plats()
+
 
 	$(document).on('click', '.exp-cat-link-del', async function (e) {
 		let parent = $(this).parent();

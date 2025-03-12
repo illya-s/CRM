@@ -14,7 +14,8 @@
 		--txt-d-color: #E5E5E5;
 		--txt-bn-color: #E5E5E5;
 
-		--hv-txt-color: #FFFFFF55;
+		--hv-txt-l-color: #FFFFFF55;
+		--hv-txt-d-color: #00000055;
 	}
 }
 @media (prefers-color-scheme: light) {
@@ -33,6 +34,7 @@
 		--txt-d-color: #2F3039;
 		--txt-bn-color: #E5E5E5;
 
-		--hv-txt-color: #FFFFFF55;
+		--hv-txt-l-color: #00000055;
+		--hv-txt-d-color: #FFFFFF55;
 	}
 }

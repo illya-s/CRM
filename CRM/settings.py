@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'order',
     'expense',
     'webhook',
+    'backup',
 
     'django_celery_beat',
 

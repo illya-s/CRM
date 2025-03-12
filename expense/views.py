@@ -56,7 +56,7 @@ def upd_expense_cat(request, pk):
         return JsonResponse({ 'message': form.errors }, status=400)
     else:
         form = ExpenseCategoryForm(instance=expense_cat)
-        context = { 'form': form, 'page': "create_expense_category", 'page_name': 'Добавить категорию расходов' }
+        context = { 'form': form, 'page': "create_expense_category", 'page_name': 'Редактировать категорию расходов' }
         return render(request, 'expense/form.htm', context)
 @auth.is_staff_required(redirect_url='expenses')
 def del_expense_cat(request):
@@ -67,6 +67,51 @@ def del_expense_cat(request):
         return JsonResponse({ 'message': 'sucses' }, status=200)
     else:
         return Http404
+
+
+
+@auth.login_required(redirect_url='login')
+def plat_list(request):
+    EPlatList = ExpensePlatform.objects.all()
+    context = {'ePlatList': EPlatList}
+    return JsonResponse({'list': render_to_string('expense/plat_list.htm', context),})
+
+@auth.is_staff_required(redirect_url='expenses')
+def add_expense_plat(request):
+    if request.method == 'POST':
+        form = ExpensePlatformForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('expenses')
+        return JsonResponse({ 'message': form.errors }, status=400)
+    else:
+        form = ExpensePlatformForm()
+        context = { 'form': form, 'page': "create_expense_category", 'page_name': 'Добавить платформу расходов' }
+        return render(request, 'expense/form.htm', context)
+@auth.is_staff_required(redirect_url='expenses')
+def upd_expense_plat(request, pk):
+    expense_cat = get_object_or_404(ExpenseCategory, pk=pk)
+
+    if request.method == 'POST':
+        form = ExpensePlatformForm(request.POST, request.FILES, instance=expense_cat)
+        if form.is_valid():
+            form.save()
+            return redirect('expenses')
+        return JsonResponse({ 'message': form.errors }, status=400)
+    else:
+        form = ExpensePlatformForm(instance=expense_cat)
+        context = { 'form': form, 'page': "create_expense_category", 'page_name': 'Редактировать платформу расходов' }
+        return render(request, 'expense/form.htm', context)
+@auth.is_staff_required(redirect_url='expenses')
+def del_expense_plat(request):
+    if request.method == 'POST':
+        expense_cat = get_object_or_404(ExpenseCategory, pk=request.POST.get('cID'))
+        expense_cat.delete()
+
+        return JsonResponse({ 'message': 'sucses' }, status=200)
+    else:
+        return Http404
+
 
 
 def expense_list(request):
@@ -114,10 +159,15 @@ def expense_list(request):
 
     expenses_obj = [
         {
-            **model_to_dict(order),
-            'category': order.category.name
+            **model_to_dict(expense),
+            'product': {
+                'id': expense.product.pk,
+                'name': expense.product.name
+            } if expense.product else None,
+            'category': expense.category.name,
+            'platform': expense.platform.name
         }
-        for order in objs.order_by("-date")
+        for expense in objs.order_by("-date")
     ]
     paginator = Paginator(expenses_obj, spp)
 

@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 
-import CRM.tasks
+import backup.tasks
 
 from celery import Celery
 from celery.schedules import crontab
@@ -30,7 +30,7 @@ app.conf.beat_schedule = {
         'schedule': crontab(minute=0)
     },
     "daily_backup": {
-        "task": "tasks.backup_db",
+        "task": "backup.tasks.backup_db",
         "schedule": crontab(hour=0, minute=0),
     },
 }

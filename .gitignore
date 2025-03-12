@@ -9,7 +9,7 @@ venv/
 backups
 backups/
 *.sql
-# test.py
+test.py
 config.py
 crm.sock
 txt.txt

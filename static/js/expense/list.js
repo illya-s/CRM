@@ -21,19 +21,6 @@ $(document).ready(function () {
 		load_list();
 	});
 
-	const pageName = 'expenses';
-
-	const EPPN = `${pageName}epp`
-	if (localStorage.getItem(EPPN)) {
-		localStorage.removeItem(EPPN)
-	}
-	const EPNN = `${pageName}epn`
-	if (localStorage.getItem(EPNN)) {
-		localStorage.removeItem(EPNN)
-	}
-
-	console.log(pageName, EPPN, EPNN)
-
 	function hash() {
 		return window.location.hash.split("#")[1]
 	}

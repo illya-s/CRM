@@ -8,6 +8,13 @@ django.setup()
 
 from expense.models import *
 
+p = ExpensePlatform.objects.get(id=1)
+data = Expense.objects.all()
+
+for e in tqdm.tqdm(data, desc="Обработка", bar_format="{l_bar}{bar} {n_fmt}/{total_fmt}"):
+    e.platform = p
+    e.save()
+
 # JOData = {"Expenses": []}
 
 # with open("t.txt", "r", encoding="utf-8") as file:
@@ -27,17 +34,17 @@ from expense.models import *
 #     json.dump(JOData, file, ensure_ascii=False, indent=4)
 
 
-with open("t.json", "r", encoding="utf-8") as file:
-    JOData = json.load(file)
+# with open("t.json", "r", encoding="utf-8") as file:
+#     JOData = json.load(file)
 
-for i in tqdm.tqdm(JOData["Expenses"], desc="Обработка", bar_format="{l_bar}{bar} {n_fmt}/{total_fmt}"):
-    date = datetime.datetime.strptime(i["date"], "%d.%m.%Y") # .strftime("%Y-%m-%d")
-    aware_datetime = timezone.make_aware(date)
-    price = i["price"]
-    description = i["description"]
+# for i in tqdm.tqdm(JOData["Expenses"], desc="Обработка", bar_format="{l_bar}{bar} {n_fmt}/{total_fmt}"):
+#     date = datetime.datetime.strptime(i["date"], "%d.%m.%Y") # .strftime("%Y-%m-%d")
+#     aware_datetime = timezone.make_aware(date)
+#     price = i["price"]
+#     description = i["description"]
 
-    eCat, created = ExpenseCategory.objects.get_or_create(name=i["cat"])
-    Expense.objects.create(date=aware_datetime, price=price, description=description, category=eCat)
+#     eCat, created = ExpenseCategory.objects.get_or_create(name=i["cat"])
+#     Expense.objects.create(date=aware_datetime, price=price, description=description, category=eCat)
 
 
 # Dobronravov

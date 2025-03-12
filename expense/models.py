@@ -7,14 +7,24 @@ class ExpenseCategory(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
-    
+
+    def __str__(self):
+        return self.name
+
+class ExpensePlatform(models.Model):
+    name = models.CharField(max_length=500, blank=False, null=True, verbose_name="Название")
+
+    created = models.DateTimeField(auto_now_add=True, null=True)
+    updated = models.DateTimeField(auto_now=True, null=True)
+
     def __str__(self):
         return self.name
 
 class Expense(models.Model):
-    category = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, related_name='category_expenses', null=True, verbose_name="Категория")
+    category = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, related_name='categoryes', null=True, verbose_name="Категория")
+    platform = models.ForeignKey(ExpensePlatform, on_delete=models.SET_NULL, related_name='platforms', null=True, verbose_name="Платформа")
 
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='category_products', verbose_name="Товар")
+    product  = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='category_products', verbose_name="Товар")
 
     description = models.CharField(max_length=1000, null=True, blank=True, verbose_name="Описание")
 
