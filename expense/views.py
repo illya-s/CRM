@@ -207,7 +207,7 @@ def add_expense(request):
         form = ExpenseForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(request.META.get('HTTP_REFERER', '/'))
+            return redirect("expenses")
         return JsonResponse({ 'message': form.errors }, status=400)
     else:
         form = ExpenseForm()
@@ -221,7 +221,7 @@ def upd_expense(request, pk):
         form = ExpenseForm(request.POST, request.FILES, instance=expense)
         if form.is_valid():
             form.save()
-            return redirect(request.META.get('HTTP_REFERER', '/'))
+            return redirect("expenses")
     else:
         form = ExpenseForm(instance=expense)
         context = { 'form': form, 'page': "edit_expense", 'page_name': 'Редактировать расход' }
