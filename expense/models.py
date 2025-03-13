@@ -21,8 +21,8 @@ class ExpensePlatform(models.Model):
         return self.name
 
 class Expense(models.Model):
-    category = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, related_name='categoryes', null=True, verbose_name="Категория")
-    platform = models.ForeignKey(ExpensePlatform, on_delete=models.SET_NULL, related_name='platforms', null=True, verbose_name="Платформа")
+    category = models.ForeignKey(ExpenseCategory, on_delete=models.SET_NULL, related_name='expenses', null=True, verbose_name="Категория")
+    platform = models.ForeignKey(ExpensePlatform, on_delete=models.SET_NULL, related_name='expenses', null=True, verbose_name="Платформа")
 
     product  = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='category_products', verbose_name="Товар")
 

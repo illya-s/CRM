@@ -1,6 +1,6 @@
 body {
 	display: grid;
-	grid-template-columns: max-content auto;
+	grid-template-rows: max-content auto;
 
 	overflow-y: hidden;
 
@@ -10,22 +10,33 @@ body {
 
 
 header {
-	display: none;
-}
+	width: 100%;
+	padding: 10px 1rem;
 
+	display: grid;
+	grid-template-columns: auto max-content;
+	gap: 1rem;
+
+	background-color: var(--hd-color);
+}
+.header-links {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+}
 
 
 nav {
 	width: max-content;
-	width: 100%;
-	height: 100vh;
+	
+	/* height: 100vh; */
 	padding: 1rem;
 
 	display: grid;
 	grid-template-rows: max-content max-content auto max-content;
 	gap: 1rem;
 
-	background-color: var(--hd-color);
+	
 }
 
 nav > section {
@@ -48,12 +59,11 @@ nav * {
 	color: var(--txt-bn-color);
 }
 
-nav a, nav button {
+header a, header button {
 	padding: 7px 15px;
 
-
 	border: solid 2px var(--bn-color);
-	border-radius: 15px;
+	border-radius: 10px;
 	background-color: transparent;
 
 	text-decoration: none;

@@ -26,11 +26,18 @@ def expenses(request):
     }
     return render(request, 'expense/expenses.htm', context)
 
+
 @auth.login_required(redirect_url='login')
-def cat_list(request):
-    ECatList = ExpenseCategory.objects.all()
-    context = {'eCatList': ECatList}
-    return JsonResponse({'list': render_to_string('expense/cat_list.htm', context),})
+def filter_list(request):
+    ECatList  = ExpenseCategory.objects.all()
+    EPlatList = ExpensePlatform.objects.all()
+
+    context = {
+        'eCatList': ECatList,
+        'ePlatList': EPlatList
+    }
+    return JsonResponse({'list': render_to_string('expense/filter_list.htm', context),})
+
 
 @auth.is_staff_required(redirect_url='expenses')
 def add_expense_cat(request):
@@ -69,12 +76,6 @@ def del_expense_cat(request):
         return Http404
 
 
-
-@auth.login_required(redirect_url='login')
-def plat_list(request):
-    EPlatList = ExpensePlatform.objects.all()
-    context = {'ePlatList': EPlatList}
-    return JsonResponse({'list': render_to_string('expense/plat_list.htm', context),})
 
 @auth.is_staff_required(redirect_url='expenses')
 def add_expense_plat(request):
@@ -126,19 +127,23 @@ def expense_list(request):
     # page number
     page = int(request.GET.get('page')) if request.GET.get('page') else 1
 
-    # filter
-    f = request.GET.get('filter')
+    # filter: category, platform
+    cp = request.GET.get('cp')
+    cat, plat = tuple(str(cp).split(',')) if cp and cp != "undefined" else ("-1", "-1")
 
     ymd = request.GET.get('ymd')
 
     # year month
     y, m, d = tuple(str(ymd).split(',')) if ymd and ymd != "undefined" else (now.year, "-1", "-1")
 
-    if f != "-1":
-        eCat = get_object_or_404(ExpenseCategory, id=f)
-        objs = eCat.category_expenses.all()
-    else:
-        objs = Expense.objects.all()
+    objs = Expense.objects.all()
+
+    if cat != "-1":
+        eCat = get_object_or_404(ExpenseCategory, id=cat)
+        objs = objs.filter(category=eCat)
+    if plat != "-1":
+        ePlat = get_object_or_404(ExpensePlatform, id=plat)
+        objs = objs.filter(platform=ePlat)
 
     objs = objs.filter(date__year=y)
 
@@ -180,14 +185,16 @@ def expense_list(request):
 
     data = {
         "expenses": expenses,
-        'yl': years_list,
-        'ml': month_list,
-        'dl': day_list,
-        'cy': y, 'cm': m, 'cd': d
     }
 
     data_html = {
         'list': render_to_string('expense/list.htm', data),
+
+        'yl': years_list,
+        'ml': month_list,
+        'dl': day_list,
+        'cy': y, 'cm': m, 'cd': d,
+        'cCat': cat, 'cPlat': plat,
     }
     return JsonResponse(data_html)
 

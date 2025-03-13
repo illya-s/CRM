@@ -21,24 +21,66 @@ $(document).ready(function () {
 		load_list();
 	});
 
-	function hash() {
-		return window.location.hash.split("#")[1]
-	}
-
-	if (hash() == "" || hash() == undefined) {
-		window.location.hash = "-1"
-	}
-
 	window.load_list = function() {
 		var y = $("#yearSelect").val()
 		var m = $("#monthSelect").val()
 		var d = $("#daySelect").val()
+		var cat = $("#catSelect").val()
+		var plat = $("#platSelect").val()
+
+		var context = {
+			'page': params.get("p"),
+			'epp': params.get("epp"),
+			'cp': cat && plat ? `${cat},${plat}` : undefined,
+			'ymd': y && m ? `${y},${m},${d}`: undefined
+		}
+
 		$.ajax({
 			type: "GET",
 			url: URL,
-			data: { 'page': params.get("p"), 'epp': params.get("epp"), 'filter': hash(), 'ymd': y && m ? `${y},${m},${d}`: undefined },
+			data: context,
 			success: function (response) {
 				LIST.html(response.list);
+
+				const yearSelect  = $("#yearSelect");
+				const monthSelect = $("#monthSelect");
+				const daySelect   = $("#daySelect");
+				const catSelect   = $("#catSelect");
+				const platSelect  = $("#platSelect");
+
+				yearSelect.html()
+				monthSelect.html()
+				daySelect.html()
+
+
+				monthSelect.append(
+					$('<option>', {value: "-1"}).text("Все")
+				)
+				daySelect.append(
+					$('<option>', {value: "-1"}).text("Все")
+				)
+
+
+				$(response.yl).each(function (i, element) {
+					var el = $('<option>', {value: element}).text(element)
+					yearSelect.append(el)
+				});
+				$(response.ml).each(function (i, element) {
+					var el = $('<option>', {value: element}).text(element)
+					monthSelect.append(el)
+				});
+				$(response.dl).each(function (i, element) {
+					var el = $('<option>', {value: element}).text(element)
+					daySelect.append(el)
+				});
+
+				yearSelect.val(response.cy)
+				monthSelect.val(response.cm)
+				daySelect.val(response.cd)
+
+				catSelect.val(response.cCat)
+				platSelect.val(response.cPlat)
+
 				$("#EPP").val($("#EPP").data('epp'))
 			},
 			error: function (error) {
@@ -48,11 +90,23 @@ $(document).ready(function () {
 	}
 	load_list()
 
+	window.load_filters = function () {
+		$.ajax({
+			type: "GET",
+			url: $('.filter-wraper').data('url'),
+			success: function (response) {
+				$('.filter-wraper').html(response.list)
+			}
+		});
+	}
+	load_filters()
+
 	$(window).on("hashchange", function() {
 		load_list()
 	});
 
-	$(document).on('change', '#yearSelect, #monthSelect, #daySelect', function (e) {
+	$(document).on('change', '#yearSelect, #monthSelect, #daySelect, #catSelect, #platSelect', function (e) {
+		load_filters()
 		load_list()
 	})
 

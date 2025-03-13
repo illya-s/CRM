@@ -23,65 +23,18 @@
 	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 
 	<header>
-		<button class="show-nav-bar" id="showNavBar">
-			<svg width="400" height="325" viewBox="0 0 400 325" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect width="400" height="67.0157" rx="33.5079" fill="white"/>
-				<rect y="129" width="400" height="65.9686" rx="32.9843" fill="white"/>
-				<rect y="257" width="400" height="67.0157" rx="33.5079" fill="white"/>
-			</svg>
-		</button>
-
-		<h2>{{ page_name }}</h2>
-	</header>
-
-	<nav>
-		<button class="close-nav-bar" id="closeNavBar">
-			<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<g clip-path="url(#clip0_147_2)">
-					<rect x="-2.57373" y="472.176" width="672" height="60" rx="30" transform="rotate(-45 -2.57373 472.176)" fill="#F0E9E6"/>
-					<rect x="39.4263" y="-2.82425" width="672" height="60" rx="30" transform="rotate(45 39.4263 -2.82425)" fill="#F0E9E6"/>
-				</g>
-				<defs>
-					<clipPath id="clip0_147_2">
-						<rect width="512" height="512" fill="white"/>
-					</clipPath>
-				</defs>
-			</svg>
-		</button>
-		<section class="product-links">
+		<div class="header-links">
 			<a href="{% url 'products' %}">Товары</a>
-
-			<!-- <div>
-				{% if suppliers %}
-					{% for supplier in suppliers %}
-					<button class="supplier-products">{{ supplier.name }}</>
-					{% endfor %}
-				{% endif %}
-			</div> -->
-
 			<a href="{% url 'import_sup_product' %}">Поставщики</a>
-		</section>
-
-		<section class="order-links">
-			<h3 class="section-title">Заказы</h3>
 
 			<a href="{% url 'orders' %}">Заказы</a>
 			<a href="{% url 'statistic' %}">Статистика</a>
-			<!-- <a href="{% url 'import_orders' %}">Импорт</a> -->
-		</section>
-
-		<section class="expense-links">
-			<h3>Расходы</h3>
 
 			<a href="{% url 'expenses' %}">Расходы</a>
-		</section>
-		
-		<section class="user-links">
-			<h3 class="section-title">Пользователь</h3>
-			<a href="{% url 'profile' %}" data-id="profile">Профиль</a>
-		</section>
-		<!-- <a href="#">Заказы</a> -->
-	</nav>
+		</div>
+
+		<a href="{% url 'profile' %}" data-id="profile">Профиль</a>
+	</header>
 
 	<main>
 		{% block content %}

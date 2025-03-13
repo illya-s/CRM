@@ -4,25 +4,7 @@
 
 <div class="top-menu">
 	<p>Затраты</p>
-	<div class="top-menu-ymd-selection">
-		<select class="year-select" name="" id="yearSelect" data-year="{{ cy }}">
-			{% for y in yl %}
-			<option value="{{ y }}">{{ y }}</option>
-			{% endfor %}
-		</select>
-		<select class="month-select" name="" id="monthSelect" data-month="{{ cm }}">
-			<option value="-1">Все</option>
-			{% for m in ml %}
-			<option value="{{ m }}">{{ m }}</option>
-			{% endfor %}
-		</select>
-		<select class="day-select" name="" id="daySelect" data-day="{{ cd }}">
-			<option value="-1">Все</option>
-			{% for d in dl %}
-			<option value="{{ d }}">{{ d }}</option>
-			{% endfor %}
-		</select>
-	</div>
+
 	<select class="top-menu-select" name="" id="EPP" data-epp="{{ expenses.paginator.per_page }}">
 		<option value="25">25</option>
 		<option value="50">50</option>
@@ -34,18 +16,6 @@
 			<rect y="19" width="5" height="34" rx="2.5" transform="rotate(-90 0 19)" fill="#FFF"/>
 		</svg>
 	</a>
-
-	<script>
-		$(function () {
-			const yearSelect  = $("#yearSelect");
-			const monthSelect = $("#monthSelect");
-			const daySelect   = $("#daySelect");
-
-			yearSelect.val(yearSelect.data('year'))
-			monthSelect.val(monthSelect.data('month'))
-			daySelect.val(daySelect.data('day'))
-		});
-	</script>
 </div>
 <div class="expense-list">
 	{% for expense in expenses %}
