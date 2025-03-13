@@ -16,3 +16,4 @@ txt.txt
 test3.py
 test2.py
 file.csv
+celerybeat-schedule
