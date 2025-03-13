@@ -30,7 +30,21 @@
 			<a href="{% url 'orders' %}">Заказы</a>
 			<a href="{% url 'statistic' %}">Статистика</a>
 
-			<a href="{% url 'expenses' %}">Расходы</a>
+			<div class="list-drop">
+				<a href="{% url 'expenses' %}">
+					Расходы
+					<span class="arrow">
+						<svg width="513" height="512" viewBox="0 0 513 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M448.5 152L256.5 360L64.5 152" stroke="white" stroke-width="50" stroke-linecap="round"/>
+						</svg>
+					</span>
+				</a>
+
+				<div class="related-links">
+					<a href="#">Категории</a>
+					<a href="#">Платформы</a>
+				</div>
+			</div>
 		</div>
 
 		<a href="{% url 'profile' %}" data-id="profile">Профиль</a>

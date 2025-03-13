@@ -62,6 +62,9 @@ nav * {
 header a, header button {
 	padding: 7px 15px;
 
+	display: grid;
+	align-items: center;
+
 	border: solid 2px var(--bn-color);
 	border-radius: 10px;
 	background-color: transparent;
@@ -73,18 +76,52 @@ header a, header button {
 
 	transition: all .2s linear;
 
-	&.active {
+	&:hover {
+		opacity: .6;
 		background-color: var(--bn-color);
 		color: var(--txt-bn-color);
 	}
-	&:hover {
-		opacity: .6;
+}
+
+.header-links > a {
+	&.active {
 		background-color: var(--bn-color);
 		color: var(--txt-bn-color);
 	}
 	&.active:hover {
 		opacity: 1;
 	}
+}
+
+.list-drop {
+	position: relative;
+
+	&:hover > .related-links {
+		display: flex;
+	}
+	&:hover > a > span {
+		rotate: 180deg;
+	}
+}
+
+.list-drop > a > span {
+	height: 100%; width: auto;
+	transition: rotate .2s linear;
+}
+.list-drop > a {
+	grid-template-columns: auto 15px;
+	grid-template-rows: 15px;
+	gap: 1rem;
+}
+.related-links {
+	position: absolute;
+
+	width: 100%;
+	padding: .25rem 0 0 0;
+
+	display: none;
+	flex-direction: column;
+	gap: .25rem;
 }
 
 .close-nav-bar {
