@@ -1,0 +1,28 @@
+{% extends "base/base.htm" %}
+{% load static %}
+
+
+{% block style %}
+<meta name="page" content="{{ page }}">
+<link rel="stylesheet" href="{% static 'css/expense/cp_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="top-menu">
+	<h2>Категории</h2>
+
+	<a href="{% url 'add_expense_cat' %}" class="add-btn">
+		<svg width="515" height="516" viewBox="0 0 515 516" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="212" y="0.5" width="75" height="515" rx="37.5" fill="white"/>
+			<rect y="287.5" width="75" height="515" rx="37.5" transform="rotate(-90 0 287.5)" fill="white"/>
+		</svg>
+	</a>
+</div>
+
+<div class="exp-cats list-cont" data-url="{% url 'expense_category_list' %}"></div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/add_csrftoken.js' %}"></script>
+<script src="{% static 'js/expense/cp_list.js' %}"></script>
+{% endblock %}
