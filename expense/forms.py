@@ -32,5 +32,8 @@ class ExpenseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for _, value in self.fields.items():
-            value.widget.attrs['placeholder'] = value.label
+        for field_name, field in self.fields.items(): # empty_label
+            field.widget.attrs['placeholder'] = field.label
+
+            if isinstance(field, forms.ModelChoiceField):
+                field.empty_label = field.label

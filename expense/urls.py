@@ -8,6 +8,7 @@ urlpatterns = [
     path('l/', views.expense_list, name="expense_list"),
     path('filters/', view=views.filter_list, name="filter_list"),
 
+    # path('a/', views.add_expense, name='add_expense'),
     path('a/', views.add_expense, name='add_expense'),
     path('u/<int:pk>', views.upd_expense, name='upd_expense'),
     path('d/', views.del_expense, name="del_expense"),

@@ -96,11 +96,13 @@ def expense_list(request):
 
     data = {
         "expenses": expenses,
+        "form": ExpenseForm()
     }
 
     data_html = {
         'list': render_to_string('expense/list.htm', data),
 
+        'epp': expenses.paginator.per_page,
         'yl': years_list,
         'ml': month_list,
         'dl': day_list,
@@ -109,21 +111,34 @@ def expense_list(request):
     }
     return JsonResponse(data_html)
 
+# @auth.is_staff_required(redirect_url='expenses')
+# def add_expense(request):
+#     if 'HTTP_REFERER' in request.META:
+#         request.session['previous_url'] = request.META['HTTP_REFERER']
+    
+#     if request.method == 'POST':
+#         form = ExpenseForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("expenses")
+#         return JsonResponse({ 'message': form.errors }, status=400)
+#     else:
+#         form = ExpenseForm()
+#         context = { 'form': form, 'page': "create_expense", 'page_name': 'Добавить расход' }
+#         return render(request, 'expense/form.htm', context)
+
 @auth.is_staff_required(redirect_url='expenses')
 def add_expense(request):
-    if 'HTTP_REFERER' in request.META:
-        request.session['previous_url'] = request.META['HTTP_REFERER']
-    
     if request.method == 'POST':
         form = ExpenseForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.date = timezone.now()
             form.save()
             return redirect("expenses")
         return JsonResponse({ 'message': form.errors }, status=400)
     else:
-        form = ExpenseForm()
-        context = { 'form': form, 'page': "create_expense", 'page_name': 'Добавить расход' }
-        return render(request, 'expense/form.htm', context)
+        return Http404
+
 @auth.is_staff_required(redirect_url='expenses')
 def upd_expense(request, pk):
     expense = get_object_or_404(Expense, pk=pk)

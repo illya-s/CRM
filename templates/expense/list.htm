@@ -2,22 +2,44 @@
 <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
 
 
-<div class="top-menu">
-	<p>Затраты</p>
-
-	<select class="top-menu-select" name="" id="EPP" data-epp="{{ expenses.paginator.per_page }}">
-		<option value="25">25</option>
-		<option value="50">50</option>
-		<option value="100">100</option>
-	</select>
-	<a href="{% url 'add_expense' %}" class="top-add-btn add-order-btn" id="addOrderBtn">
-		<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<rect x="14" width="5" height="34" rx="2.5" fill="#FFF"/>
-			<rect y="19" width="5" height="34" rx="2.5" transform="rotate(-90 0 19)" fill="#FFF"/>
-		</svg>
-	</a>
-</div>
 <div class="expense-list">
+	<form method="POST" enctype="multipart/form-data" action="{% url 'add_expense' %}" id="expenseForm" class="expense-form">
+		{% csrf_token %}
+
+		{{ form.description }}
+		{{ form.product }}
+		{{ form.price }}
+
+		{{ form.category }}
+		{{ form.platform }}
+
+		<button type="submit">Добавить</button>
+	</form>
+
+	<script>
+		$(function () {
+			$("#expenseForm").submit(function(event) {
+				event.preventDefault();
+
+				// if ($(this).valid()) {
+				const action = $(this).attr('action');
+				var formData = $(this).serialize();
+				// var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+				$.ajax({
+					type: "POST",
+					url: action,
+					data: formData,
+					// headers: {'X-CSRFToken': csrfToken},
+					success: function (response) {
+						load_list()
+					}
+				});
+				// }
+			});
+		});
+	</script>
+
 	{% for expense in expenses %}
 	<div class="expense-block">
 		<p class="expense-description" title="{{ expense.description }}">{{ expense.description }}</p>
@@ -28,7 +50,7 @@
 		<p class="t-center">None</p>
 		{% endif %}
 
-		<p class="t-center">{{ expense.price }}</p>
+		<p class="t-end">{{ expense.price }}</p>
 
 		<p class="expense-category t-center">{{ expense.category }}</p>
 

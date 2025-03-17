@@ -11,6 +11,62 @@
 .expense-date {
 	display: block;
 }
+
+.expense-form {
+	display: grid;
+	grid-template-columns: 2fr 1fr .5fr 1.5fr .75fr .75fr;
+	grid-template-rows: minmax(20px, max-content);
+	align-items: center;
+	gap: .25rem;
+
+	border-radius: 5px;
+	background-color: var(--bl-l-color);
+
+	& > * {
+		padding: 5px 0;
+		text-align: center;
+	}
+	& > *:first-child {
+		padding: 5px 0 5px 5px;
+		border-radius: 5px 0 0 5px;
+		text-align: start;
+	}
+	& > *:last-child {
+		padding: 5px 5px 5px 0;
+		border-radius: 0 5px 5px 0;
+	}
+}
+
+.expense-form > * {
+	width: 100%;
+
+	border: none;
+	background-color: var(--bl-l-color);
+
+	font-size: 1rem;
+	color: var(--txt-d-color);
+
+	&:focus {
+		outline: none;
+	}
+}
+
+input[type="number"] {
+	appearance: none;
+	-webkit-appearance: textfield;
+}
+.expense-form > button {
+	transition: background-color .15s linear;
+
+	&:hover {
+		background-color: #008F00;
+	}
+}
+
+#id_price {
+	text-align: end;
+}
+
 .expense-block {
 	padding: 5px;
 
@@ -76,6 +132,12 @@
 }
 
 
+.t-start {
+	text-align: start;
+}
 .t-center {
 	text-align: center;
+}
+.t-end {
+	text-align: end;
 }

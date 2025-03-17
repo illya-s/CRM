@@ -42,6 +42,7 @@ $(document).ready(function () {
 			success: function (response) {
 				LIST.html(response.list);
 
+				const EPP         = $("#EPP")
 				const yearSelect  = $("#yearSelect");
 				const monthSelect = $("#monthSelect");
 				const daySelect   = $("#daySelect");
@@ -74,14 +75,14 @@ $(document).ready(function () {
 					daySelect.append(el)
 				});
 
+				EPP.val(response.epp)
+
 				yearSelect.val(response.cy)
 				monthSelect.val(response.cm)
 				daySelect.val(response.cd)
 
 				catSelect.val(response.cCat)
 				platSelect.val(response.cPlat)
-
-				$("#EPP").val($("#EPP").data('epp'))
 			},
 			error: function (error) {
 				alert(`Error: ${error}`)

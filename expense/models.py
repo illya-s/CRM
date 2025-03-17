@@ -28,7 +28,7 @@ class Expense(models.Model):
 
     description = models.CharField(max_length=1000, null=True, blank=True, verbose_name="Описание")
 
-    price   = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Стоимость")
+    price   = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="00,00")
 
     date    = models.DateTimeField(null=True, blank=True, verbose_name="Дата создания")
 
